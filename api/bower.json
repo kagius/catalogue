@@ -1,0 +1,7 @@
+{
+  "name": "clubfinder-api",
+  "dependencies": {
+    "underscore": "~1.5.2",
+    "jquery": "~2.0.3"
+  }
+}

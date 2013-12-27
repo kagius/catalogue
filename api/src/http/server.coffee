@@ -4,6 +4,8 @@ module.exports = class Server
 
 	constructor : (@app) ->
 		@server = restify.createServer()
+
+
 		self = @
 
 		@start = () ->
@@ -19,13 +21,23 @@ module.exports = class Server
 			format = if req.params.format then req.params.format else "json"
 
 			if self.app.config.logging.trace
-				console.log "Preparing response in format: #{format}"
+				console.log "Preparing response in format: #{format}"				
 			
 			if self.app.config.headers.accessControlAllowOrigins
 				res.setHeader 'Access-Control-Allow-Origin', self.app.config.headers.accessControlAllowOrigins
 			
-			res.setHeader 'content-type', 'application/json'
-			res.send data
+			if format == "json"
+				res.setHeader 'content-type', 'application/json'
+				res.send data
+			else
+				
+				stream = self.app.templateEngine.compileAndRender template, { data: data }
+				
+				res.writeHead 200, { 'Content-Type': 'text/html' }
+				stream.pipe res
+				stream.on 'end', () ->
+					res.end()
+					next()
 
 		@generateHandler = (name, handler) ->
 			return (req, res, next) ->

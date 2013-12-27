@@ -1,0 +1,21 @@
+{{#data}}
+<h1>Sites in {{ localities.code }}, {{ code }}</h1>	
+
+<ol class="breadcrumb">
+	<li><a href="/{{ url }}" data-bind="attr: { href:'#{{ url }} }'">{{ code }}</a></li>
+	<li class="active"><a href="/{{ localities.url }}" data-bind="attr: { href:'#{{ localities.url }} }'">{{ localities.code }}</a></li>
+</ol>
+
+<ul>
+	{{ #localities.sites }}
+	<li><a href="/{{ url }}" data-bind="attr: { href:'#{{ url }} }'">{{ code }}</a></li>
+	{{ /localities.sites }}
+	
+	{{ ^localities.sites }}
+	No sites in this locality
+	{{ /localities.sites }}
+</ul>
+{{ /data }}
+{{ ^data }}
+No data for this locality
+{{ /data }}

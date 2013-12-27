@@ -1,0 +1,9 @@
+{{#data}}
+<h1>{{ localities.sites.exhibits.code }}</h1>
+<ol class="breadcrumb">
+	<li><a href="/{{ url }}" data-bind="attr: { href:'#{{ url }} }'">{{ code }}</a></li>
+	<li><a href="/{{ localities.url }}" data-bind="attr: { href:'#{{ localities.url }} }'">{{ localities.code }}</a></li>
+	<li><a href="/{{ localities.sites.url }}" data-bind="attr: { href:'#{{ localities.sites.url }} }'">{{ localities.sites.code }}</a></li>	
+	<li class="active"><a href="/{{ localities.sites.exhibits.url }}" data-bind="attr: { href:'#{{ localities.sites.exhibits.url }} }'">{{ localities.sites.exhibits.code }}</a></li>
+</ol>
+{{ /data }}

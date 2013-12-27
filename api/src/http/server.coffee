@@ -4,8 +4,6 @@ module.exports = class Server
 
 	constructor : (@app) ->
 		@server = restify.createServer()
-
-
 		self = @
 
 		@start = () ->
@@ -18,7 +16,7 @@ module.exports = class Server
 			self.server[method] route, callback
 
 		@answer = (req, res, next, data, template) ->
-			format = if req.params.format then req.params.format else "json"
+			format = if req.params.format then req.params.format else "html"
 
 			if self.app.config.logging.trace
 				console.log "Preparing response in format: #{format}"				
@@ -29,15 +27,13 @@ module.exports = class Server
 			if format == "json"
 				res.setHeader 'content-type', 'application/json'
 				res.send data
-			else
+			else				
+				body = self.app.renderer.render template, data
 				
-				stream = self.app.templateEngine.compileAndRender template, { data: data }
-				
-				res.writeHead 200, { 'Content-Type': 'text/html' }
-				stream.pipe res
-				stream.on 'end', () ->
-					res.end()
-					next()
+				res.writeHead 200, { 'Content-Type': 'text/html', 'Content-Length' : body.length }
+				res.write body
+				res.end()
+				next()
 
 		@generateHandler = (name, handler) ->
 			return (req, res, next) ->
@@ -55,7 +51,6 @@ module.exports = class Server
 			if self.app.config.logging.trace
 				console.log "Registering #{method} handler #{name} for route '#{route}' v#{version}"
 
-			self.setRoute method, { path: route + "/:format", version: version }, implementation
 			self.setRoute method, { path: route, version: version }, implementation		
 
 		@_register = (baseUrl, name, handler) ->

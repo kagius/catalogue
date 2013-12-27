@@ -3,7 +3,7 @@ config = require "./config"
 Server = require "./server"
 Controller = require "./controller"
 Hierarchy = require "./hierarchy"
-mu = require "mu2"
+JadeRenderer = require "./render-jade"
 
 class Application
 
@@ -14,13 +14,12 @@ class Application
 
 		@server = {}
 		@controllers = {}
-
-		@templateEngine = mu
-
-mu.root = config.templates.path
+		@renderer = {}
 
 app = new Application config
-app.server = @server = new Server app
-app.controllers.Hierarchy = new Controller app, "/api/data/"
+app.server = new Server app
+app.renderer = new JadeRenderer app
+
+app.controllers.Hierarchy = new Controller app, "/api/:format"
 
 app.server.start()

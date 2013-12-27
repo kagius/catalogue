@@ -7,9 +7,9 @@ module.exports = class Controller
 			{
 				name: "exhibit",
 				method: "get",
-				routes: ["detail/:country/:location/:site/:exhibit"],
+				routes: [ "/:country/:location/:site/:exhibit" ],
 				version: "1.0.0",
-				htmlTemplate: "exhibit-detail.mustache",
+				htmlTemplate: "exhibit-detail",
 				implementation: (req, callback) ->
 					Hierarchy						
 						.aggregate()
@@ -27,9 +27,9 @@ module.exports = class Controller
 			{
 				name: "exhibitsInSite",
 				method: "get",
-				routes: ["items/:country/:location/:site"],
+				routes: [ "/:country/:location/:site" ],
 				version: "1.0.0",
-				htmlTemplate: "exhibit-list.mustache",
+				htmlTemplate: "exhibit-list",
 				implementation: (req, callback) ->
 					Hierarchy						
 						.aggregate()
@@ -45,9 +45,9 @@ module.exports = class Controller
 			{
 				name: "sitesInLocation",
 				method: "get",
-				routes: ["sites/:country/:location"],
+				routes: [ "/:country/:location" ],
 				version: "1.0.0",
-				htmlTemplate: "site-list.mustache",
+				htmlTemplate: "site-list",
 				implementation: (req, callback) ->
 					Hierarchy						
 						.aggregate()
@@ -61,9 +61,9 @@ module.exports = class Controller
 			{
 				name: "locationsInCountry",
 				method: "get",
-				routes: ["loc/:country"],
+				routes: [ "/:country" ],
 				version: "1.0.0",
-				htmlTemplate: "location-list.mustache",
+				htmlTemplate: "location-list",
 				implementation: (req, callback) ->
 					Hierarchy
 						.find({"code" : req.params.country.toLowerCase() })
@@ -74,9 +74,9 @@ module.exports = class Controller
 			{
 				name: "allCountries",
 				method: "get",
-				routes: ["ct"],
+				routes: [""],
 				version: "1.0.0",
-				htmlTemplate: "country-list.mustache",
+				htmlTemplate: "country-list",
 				implementation: (req, callback) ->					
 					Hierarchy
 						.find()

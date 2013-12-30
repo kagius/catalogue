@@ -1,6 +1,13 @@
 doctype html
 head
 	title= Title
+	link(rel="stylesheet", href="http://localhost:8080/assets/styles/bootstrap.min.css")
 body
-	section#content
-		block content
+	div.container
+		section#content
+			block content
+
+		div#loader(style="display:none")
+			| Loading ...
+
+	script(src="http://localhost:8080/assets/scripts/require.js", data-main="/assets/scripts/global")

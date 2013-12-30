@@ -1,7 +1,3 @@
-extends ./layout
-
-block content
-	ul
-		for country in data
-			li
-				a(href="/" + country.url)= country.code
+div.list-group
+	for country in data
+		a.list-group-item(href="/" + country.url)= country.code

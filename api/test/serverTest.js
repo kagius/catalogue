@@ -5,6 +5,10 @@ exports.shouldRegisterHandlers = function(test){
 	var app = {
 		config: {
 			port:9000,
+			assets: {
+				baseUrlPattern: /\/assets\/?.*/,
+				basePath: "./assets",
+			},
 			logging : {
 				trace : false
 			}
@@ -38,6 +42,6 @@ exports.shouldRegisterHandlers = function(test){
 	];
 
 	app.server.registerHandlers("/", handlers);
-	test.equal(app.server.server.router.routes.GET.length, 2, "A route should be added for each handler.");
+	test.equal(app.server.server.router.routes.GET.length, 3, "A route should be added for each handler. (+1 for the static file server)");
 	test.done();
 }

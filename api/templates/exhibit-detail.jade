@@ -1,15 +1,12 @@
-extends ./layout
+ol.breadcrumb
+	li
+		a(href="/" + data[0].url)= data[0].code
+	li
+		a(href="/" + data[0].localities.url)= data[0].localities.code
+	li
+		a(href="/" + data[0].localities.sites.url)= data[0].localities.sites.code
+	li
+		a(href="/" + data[0].localities.sites.exhibits.url)= data[0].localities.sites.exhibits.code
 
-block content
-	ol.breadcrumb
-		li
-			a(href="/" + data[0].url)= data[0].code
-		li
-			a(href="/" + data[0].localities.url)= data[0].localities.code
-		li
-			a(href="/" + data[0].localities.sites.url)= data[0].localities.sites.code
-		li
-			a(href="/" + data[0].localities.sites.exhibits.url)= data[0].localities.sites.exhibits.code
-
-	h1
-		= data[0].localities.sites.exhibits.code
+h1
+	= data[0].localities.sites.exhibits.code

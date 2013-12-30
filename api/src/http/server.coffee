@@ -4,6 +4,8 @@ module.exports = class Server
 
 	constructor : (@app) ->
 		@server = restify.createServer()
+		@server.get @app.config.assets.baseUrlPattern, restify.serveStatic { directory: @app.config.assets.basePath }
+
 		self = @
 
 		@start = () ->

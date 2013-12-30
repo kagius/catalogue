@@ -1,0 +1,19 @@
+extends ./layout
+
+block content
+	ol.breadcrumb
+		li
+			a(href="/" + data[0].url)= data[0].code
+		li
+			a(href="/" + data[0].localities.url)= data[0].localities.code
+		li.active
+			a(href="/" + data[0].localities.sites.url)= data[0].localities.sites.code
+
+	h1
+		| Exhibits in 
+		= data[0].localities.sites.code + ", " + data[0].localities.code + " (" + data[0].code + ")"
+
+	ul
+		for exhibit in data[0].localities.sites.exhibits
+			li
+				a(href="/" + exhibit.url)= exhibit.code

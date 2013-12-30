@@ -1,0 +1,15 @@
+extends ./layout
+
+block content
+	ol.breadcrumb
+		li.active
+			a(href="/" + data[0].url)= data[0].code
+
+	h1
+		| Locations in 
+		= data[0].code
+
+	ul
+		for location in data[0].localities
+			li
+				a(href="/" + location.url)= location.code

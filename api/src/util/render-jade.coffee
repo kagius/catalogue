@@ -10,11 +10,11 @@ module.exports = class JadeRenderer
 			name = file.slice(0, -5)
 
 			console.log "Precompiling template #{name}"
-			repo[name] = jade.compile fs.readFileSync path + filename, 'utf8'
+			repo[name] = jade.compile fs.readFileSync(path + filename, 'utf8'), { filename: path + filename, pretty: false }
 
 		files = fs.readdirSync @app.config.templates.path
 
 		compile @templates, @app.config.templates.path, file for file in files when file.indexOf(".jade") != -1
 
 		@render = (template, data) ->
-			self.templates[template] data
+			self.templates[template] { debug: true, data: data }

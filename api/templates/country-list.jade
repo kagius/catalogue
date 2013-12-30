@@ -1,10 +1,7 @@
-p!= locals
+extends ./layout
 
-if code
-  p= code
-else
-  p No code!
-
- p!= localities
-
- p= data
+block content
+	ul
+		for country in data
+			li
+				a(href="/" + country.url)= country.code

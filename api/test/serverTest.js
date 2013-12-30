@@ -38,6 +38,6 @@ exports.shouldRegisterHandlers = function(test){
 	];
 
 	app.server.registerHandlers("/", handlers);
-	test.equal(app.server.server.router.routes.GET.length, 4, "Two routes should be added for each handler: the given one, and one with the additional format parameter.");
+	test.equal(app.server.server.router.routes.GET.length, 2, "A route should be added for each handler.");
 	test.done();
 }

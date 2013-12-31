@@ -1,8 +1,11 @@
-Hierarchy = require "./hierarchy"
-
 module.exports = class Controller
 
 	constructor : (@app, @baseUrl) ->
+		self = this
+
+		@implementation = (req, callback) ->
+			self.app.model.Catalogue.find callback, req.params.country, req.params.location, req.params.site, req.params.exhibit
+
 		@handlers = [
 			{
 				name: "exhibit",
@@ -10,78 +13,77 @@ module.exports = class Controller
 				routes: [ "/:country/:location/:site/:exhibit" ],
 				version: "1.0.0",
 				htmlTemplate: "exhibit-detail",
-				implementation: (req, callback) ->
-					Hierarchy						
-						.aggregate()
-						.match({"code" : req.params.country.toLowerCase() })
-						.unwind('localities')
-						.match({"localities.code" : req.params.location.toLowerCase() })
-						.unwind('localities.sites')
-						.match({"localities.sites.code" : req.params.site.toLowerCase() })
-						.unwind('localities.sites.exhibits')
-						.match({"localities.sites.exhibits.code" : req.params.exhibit.toLowerCase() })
-						.project("code url localities.code localities.url localities.sites.code localities.sites.url localities.sites.exhibits")						
-						.exec callback
+				implementation: self.implementation
 			},
 
 			{
-				name: "exhibitsInSite",
+				name: "site",
 				method: "get",
 				routes: [ "/:country/:location/:site" ],
 				version: "1.0.0",
 				htmlTemplate: "exhibit-list",
-				implementation: (req, callback) ->
-					Hierarchy						
-						.aggregate()
-						.match({"code" : req.params.country.toLowerCase() })
-						.unwind('localities')
-						.match({"localities.code" : req.params.location.toLowerCase() })
-						.unwind('localities.sites')
-						.match({"localities.sites.code" : req.params.site.toLowerCase() })
-						.project("code url localities.code localities.url localities.sites.code localities.sites.url localities.sites.exhibits")
-						.exec callback
+				implementation: self.implementation
 			},
 
 			{
-				name: "sitesInLocation",
+				name: "location",
 				method: "get",
 				routes: [ "/:country/:location" ],
 				version: "1.0.0",
 				htmlTemplate: "site-list",
-				implementation: (req, callback) ->
-					Hierarchy						
-						.aggregate()
-						.match({"code" : req.params.country.toLowerCase() })
-						.unwind('localities')
-						.match({"localities.code" : req.params.location.toLowerCase() })
-						.project("code url localities.code localities.url localities.sites.code localities.sites.url")
-						.exec callback
+				implementation: self.implementation
 			},
 
 			{
-				name: "locationsInCountry",
+				name: "country",
 				method: "get",
 				routes: [ "/:country" ],
 				version: "1.0.0",
 				htmlTemplate: "location-list",
-				implementation: (req, callback) ->
-					Hierarchy
-						.find({"code" : req.params.country.toLowerCase() })
-						.select("-_id")
-						.exec callback
+				implementation: (req, callback) -> 
+					self.implementation req, (err, data) ->
+						self.app.model.Text.find (err, text) ->
+							model = {
+								meta: text.meta
+								url: data._id
+								content: text.content
+							}
+
+							model.meta.url = self.app.config.globals.baseUrl + "/" + text.url
+							self.app.model.Text.getTitles (err, list) ->
+								model.children = list
+								callback err, model
+							, data.localities, "en"
+							
+						, data._id, "en"
 			},
 
 			{
 				name: "allCountries",
 				method: "get",
-				routes: [""],
+				routes: ["/"],
 				version: "1.0.0",
 				htmlTemplate: "country-list",
-				implementation: (req, callback) ->					
-					Hierarchy
-						.find()
-						.select("-_id")
-						.exec callback
+				implementation: (req, callback) -> 
+					self.implementation req, (err, data) ->
+
+						countries = []
+						countries.push(item.id) for item in data
+
+						self.app.model.Text.find (err, text) ->
+							model = {
+								meta: text.meta
+								url: data.url
+								content: text.content
+							}
+
+							model.meta.url = self.app.config.globals.baseUrl + "/"
+							self.app.model.Text.getTitles (err, list) ->
+								model.children = list
+								callback err, model
+							, countries, "en"
+							
+						, "/", "en"
 			}
 		]
 

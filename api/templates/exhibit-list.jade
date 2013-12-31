@@ -1,15 +1,22 @@
 ol.breadcrumb
 	li
-		a(href="/" + data[0].url)= data[0].code
+		a(href="/") Home
+
 	li
-		a(href="/" + data[0].localities.url)= data[0].localities.code
+		a(href="/" + data.country.url)= data.country.label
+
+	li
+		a(href="/" + data.locality.url)= data.locality.label
+
 	li.active
-		a(href="/" + data[0].localities.sites.url)= data[0].localities.sites.code
+		a(href="/" + data.url)= data.meta.title
 
 h1
 	| Exhibits in 
-	= data[0].localities.sites.code + ", " + data[0].localities.code + " (" + data[0].code + ")"
+	= data.meta.title
+
+div= data.content
 
 div.list-group
-	for exhibit in data[0].localities.sites.exhibits
-		a.list-group-item(href="/" + exhibit.url)= exhibit.code
+	for child in data.children
+		a.list-group-item(href="/" + child.url)= child.meta.title

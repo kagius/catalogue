@@ -1,13 +1,30 @@
 doctype html
-head
-	title= Title
-	link(rel="stylesheet", href="http://localhost:8080/assets/styles/bootstrap.min.css")
-body
-	div.container
-		section#content
-			block content
+html(lang="en")
+	head				
+		title= data.meta.title
+		
+		meta(name="description", content="#{data.meta.description}")
+		meta(name="keywords", content="#{data.meta.keywords}")
 
-		div#loader(style="display:none")
-			| Loading ...
+		meta(property="og:type", content="website")
+		meta(property="og:title", content="#{data.meta.title}")
+		meta(property="og:description", content="#{data.meta.description}")
+		meta(property="og:site_name", content="TBD")
+		meta(property="og:url", content="#{data.meta.url}")
+		meta(property="og:image", content="")
 
-	script(src="http://localhost:8080/assets/scripts/require.js", data-main="/assets/scripts/global")
+		link(rel="stylesheet", href="#{ globals.baseUrl }/assets/styles/bootstrap.min.css")
+		link(rel="shortcut icon", type="image/x-icon", href="#{ globals.baseUrl }/assets/favicon.ico")
+		link(rel="canonical", href="#{data.meta.url}")
+	body
+		div.container
+			section#content
+				block content
+
+			section#type(style="display:none")
+				block type
+
+			div#loader(style="display:none")
+				| Loading ...
+
+		script(src="#{ globals.baseUrl }/assets/scripts/require.js", data-main="/assets/scripts/global")

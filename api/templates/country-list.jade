@@ -1,3 +1,5 @@
+div= data.content
+
 div.list-group
-	for country in data
-		a.list-group-item(href="/" + country.url)= country.code
+	for location in data.children
+		a.list-group-item(href="/" + location.url)= location.meta.title

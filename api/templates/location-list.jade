@@ -1,11 +1,16 @@
 ol.breadcrumb
+	li
+		a(href="/") Home
+
 	li.active
-		a(href="/" + data[0].url)= data[0].code
+		a(href="/" + data.url)= data.meta.title
 
 h1
 	| Locations in 
-	= data[0].code
+	= data.meta.title
+
+div= data.content
 
 div.list-group
-	for location in data[0].localities
-		a.list-group-item(href="/" + location.url)= location.code
+	for location in data.children
+		a.list-group-item(href="/" + location.url)= location.meta.title

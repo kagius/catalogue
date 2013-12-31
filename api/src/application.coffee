@@ -1,6 +1,9 @@
 mongoose = require "mongoose"
 config = require "./config"
 
+Catalogue = require "./catalogue"
+Text = require "./text"
+
 Controller = require "./controller"
 HtmlController = require "./htmlController"
 
@@ -14,11 +17,15 @@ class Application
 		@db = mongoose.connection;		
 
 		@server = {}
+		@model = {}
 		@controllers = {}
 		@renderer = {}
 
 app = new Application config
 app.server = new Server app
+
+app.model.Catalogue = new Catalogue app
+app.model.Text = new Text app
 
 # Register renderer.
 app.renderer = new JadeRenderer app

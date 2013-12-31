@@ -20,7 +20,7 @@ require(['jquery', 'jquery.history'], function ($) {
         	content.html(local[hash]);
         } else {
 
-        	$.get("/api/html" + hash)
+        	$.get("/api/html" + (hash == "/") ? "" : hash)
         	 .done(function(data) {
         	 	local[hash] = data;
         	 	content.html(local[hash]);

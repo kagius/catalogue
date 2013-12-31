@@ -1,8 +1,45 @@
-Hierarchy = require "./hierarchy"
-
 module.exports = class HtmlController
 
 	constructor : (@app, @baseUrl) ->
+
+		self = @
+
+		@query = (req, callback) ->
+			self.app.model.Catalogue.find callback, req.params.country, req.params.location, req.params.site, req.params.exhibit
+
+		@localize = (data, callback) ->
+
+			model = {}
+			model.data = data
+			model.language = data.language
+
+			console.log model
+
+			self.app.model.Text.find (err, text) ->
+				model.meta = text.meta
+				model.meta.url = self.app.config.globals.baseUrl + "/" + data._id
+				model.url = data._id
+				model.content = text.content
+
+				callback model
+
+			, data._id, model.language
+
+		@localizeChildCollection = (model, childCollectionName, callback) ->
+			self.app.model.Text.getTitles (err, list) ->
+				model.children = list
+				callback model
+			, model.data[childCollectionName], model.language
+
+		@addLocalizedParameter = (model, parameterName, parameterValue, callback) ->
+			self.app.model.Text.find (err, text) ->
+				model[parameterName] = {}
+				model[parameterName].label = text.meta.title
+				model[parameterName].url = text.url
+
+				callback model
+			, parameterValue, model.language
+
 		@handlers = [
 			{
 				name: "exhibit",
@@ -10,18 +47,7 @@ module.exports = class HtmlController
 				routes: [ "/:country/:location/:site/:exhibit" ],
 				version: "1.0.0",
 				htmlTemplate: "exhibit-detail-wrapper",
-				implementation: (req, callback) ->
-					Hierarchy						
-						.aggregate()
-						.match({"code" : req.params.country.toLowerCase() })
-						.unwind('localities')
-						.match({"localities.code" : req.params.location.toLowerCase() })
-						.unwind('localities.sites')
-						.match({"localities.sites.code" : req.params.site.toLowerCase() })
-						.unwind('localities.sites.exhibits')
-						.match({"localities.sites.exhibits.code" : req.params.exhibit.toLowerCase() })
-						.project("code url localities.code localities.url localities.sites.code localities.sites.url localities.sites.exhibits")						
-						.exec callback
+				implementation: self.query
 			},
 
 			{
@@ -30,16 +56,17 @@ module.exports = class HtmlController
 				routes: [ "/:country/:location/:site" ],
 				version: "1.0.0",
 				htmlTemplate: "exhibit-list-wrapper",
-				implementation: (req, callback) ->
-					Hierarchy						
-						.aggregate()
-						.match({"code" : req.params.country.toLowerCase() })
-						.unwind('localities')
-						.match({"localities.code" : req.params.location.toLowerCase() })
-						.unwind('localities.sites')
-						.match({"localities.sites.code" : req.params.site.toLowerCase() })
-						.project("code url localities.code localities.url localities.sites.code localities.sites.url localities.sites.exhibits")
-						.exec callback
+				implementation: (req, callback) -> 
+
+					self.query req, (err, data) ->
+
+						data.language = "en"
+
+						self.localize data, (model) ->
+							self.localizeChildCollection model, "exhibits", (model) ->
+								self.addLocalizedParameter model, "country", req.params.country.toLowerCase(), (model) ->								
+									self.addLocalizedParameter model, "locality", req.params.country.toLowerCase() + "/" + req.params.location.toLowerCase(), (model) ->								
+										callback null, model
 			},
 
 			{
@@ -48,14 +75,17 @@ module.exports = class HtmlController
 				routes: [ "/:country/:location" ],
 				version: "1.0.0",
 				htmlTemplate: "site-list-wrapper",
-				implementation: (req, callback) ->
-					Hierarchy						
-						.aggregate()
-						.match({"code" : req.params.country.toLowerCase() })
-						.unwind('localities')
-						.match({"localities.code" : req.params.location.toLowerCase() })
-						.project("code url localities.code localities.url localities.sites.code localities.sites.url")
-						.exec callback
+				implementation: (req, callback) -> 
+
+					self.query req, (err, data) ->
+
+						data.language = "en"
+
+						self.localize data, (model) ->
+							self.localizeChildCollection model, "sites", (model) ->
+								self.addLocalizedParameter model, "country", req.params.country.toLowerCase(), (model) ->	
+									console.log model							
+									callback null, model
 			},
 
 			{
@@ -64,11 +94,15 @@ module.exports = class HtmlController
 				routes: [ "/:country" ],
 				version: "1.0.0",
 				htmlTemplate: "location-list-wrapper",
-				implementation: (req, callback) ->
-					Hierarchy
-						.find({"code" : req.params.country.toLowerCase() })
-						.select("-_id")
-						.exec callback
+				implementation: (req, callback) -> 
+
+					self.query req, (err, data) ->
+
+						data.language = "en"
+
+						self.localize data, (model) ->
+							self.localizeChildCollection model, "localities", (model) ->
+								callback null, model							
 			},
 
 			{
@@ -77,11 +111,21 @@ module.exports = class HtmlController
 				routes: ["/"],
 				version: "1.0.0",
 				htmlTemplate: "country-list-wrapper",
-				implementation: (req, callback) ->					
-					Hierarchy
-						.find()
-						.select("-_id")
-						.exec callback
+				implementation: (req, callback) -> 
+					self.query req, (err, data) ->
+
+						data.language = "en"
+						data._id = ""
+						
+						self.localize data, (model) ->
+
+							countries = []
+							countries.push(item.id) for item in model.data
+
+							self.app.model.Text.getTitles (err, list) ->
+								model.children = list
+								callback err, model
+							, countries, "en"							
 			}
 		]
 

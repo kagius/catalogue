@@ -17,4 +17,4 @@ module.exports = class JadeRenderer
 		compile @templates, @app.config.templates.path, file for file in files when file.indexOf(".jade") != -1
 
 		@render = (template, data) ->
-			self.templates[template] { debug: true, data: data }
+			self.templates[template] { debug: true, data: data, globals: self.app.config.globals }

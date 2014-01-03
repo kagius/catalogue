@@ -13,8 +13,6 @@ module.exports = class HtmlController
 			model.data = data
 			model.language = data.language
 
-			console.log model
-
 			self.app.model.Text.find (err, text) ->
 				model.meta = text.meta
 				model.meta.url = self.app.config.globals.baseUrl + "/" + data._id
@@ -84,7 +82,6 @@ module.exports = class HtmlController
 						self.localize data, (model) ->
 							self.localizeChildCollection model, "sites", (model) ->
 								self.addLocalizedParameter model, "country", req.params.country.toLowerCase(), (model) ->	
-									console.log model							
 									callback null, model
 			},
 

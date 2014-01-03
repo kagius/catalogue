@@ -18,6 +18,10 @@ module.exports = class Server
 			self.server[method] route, callback
 
 		@answer = (req, res, next, data, template) ->
+
+			if self.app.config.logging.trace
+				console.log data
+
 			format = if req.params.format then req.params.format else "html"
 
 			if self.app.config.logging.trace

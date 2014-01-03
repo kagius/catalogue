@@ -9,7 +9,9 @@ module.exports = class JadeRenderer
 		compile = (repo, path, filename) ->
 			name = file.slice(0, -5)
 
-			console.log "Precompiling template #{name}"
+			if self.app.config.logging.trace
+				console.log "Precompiling template #{name}"
+				
 			repo[name] = jade.compile fs.readFileSync(path + filename, 'utf8'), { filename: path + filename, pretty: false }
 
 		files = fs.readdirSync @app.config.templates.path

@@ -7,6 +7,17 @@ module.exports = {
 	// HTTP Listener port
 	port: 8080,
 
+	globals: {
+		baseUrl: "http://localhost:8080"
+	},
+
+	// Static file service directory.
+	// To be moved into ngnix eventually
+	assets: {
+		baseUrlPattern: /\/assets\/?.*/,
+		basePath: "./assets",
+	},
+
 	headers: {
 		// Ajax cross-domain whitelists
 		accessControlAllowOrigins: "http://127.0.0.1:8000"

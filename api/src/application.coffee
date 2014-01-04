@@ -4,8 +4,7 @@ config = require "./config"
 Catalogue = require "./catalogue"
 Text = require "./text"
 
-Controller = require "./controller"
-HtmlController = require "./htmlController"
+CatalogueController = require "./CatalogueController"
 
 Server = require "./server"
 JadeRenderer = require "./render-jade"
@@ -31,8 +30,8 @@ app.model.Text = new Text app
 app.renderer = new JadeRenderer app
 
 # Register controllers.
-app.controllers.Hierarchy = new Controller app, "/api/:format"
-app.controllers.Html = new HtmlController app, ""
+app.controllers.CatalogueApi = new CatalogueController app, "/api/:format", app.server.jsonWriter
+app.controllers.CatalogueWeb = new CatalogueController app, "", app.server.htmlWriter
 
 # Start accepting http requests.
 app.server.start()

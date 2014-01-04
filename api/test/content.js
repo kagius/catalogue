@@ -124,7 +124,26 @@ MongoClient.connect("mongodb://localhost/testcat", function(err, db) {
 			},
 
 			content: "Some text about the Armoury"
-		}], callback);	
+		},
+		
+		{
+			url : "mt/valletta/palace-armoury/longsword",
+
+			language: {
+				country: "GB",
+				locale: "en-GB",
+				language : "en"
+			},
+
+			meta: {
+				title: "Longsword",
+				description: "Longsword in the palace armoury collection",
+				keywords: "Bla bla bla",	
+			},
+
+			content: "some text about the longsword"
+		}
+		], callback);	
 
 
 	});

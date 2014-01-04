@@ -1,22 +1,15 @@
-ol.breadcrumb
-	li
-		a(href="/") Home
+extends ./base-list
 
-	li
-		a(href="/" + data.country.url)= data.country.label
+block breadcrumbs
+	ol.breadcrumb
+		li
+			a(href="/") Home
+		li
+			a(href="/" + data.country.url)= data.country.label
+		li
+			a(href="/" + data.locality.url)= data.locality.label
 
-	li
-		a(href="/" + data.locality.url)= data.locality.label
-
-	li.active
-		a(href="/" + data.url)= data.meta.title
-
-h1
-	| Exhibits in 
-	= data.meta.title
-
-div= data.content
-
-div.list-group
-	for child in data.children
-		a.list-group-item(href="/" + child.url)= child.meta.title
+block subtitle
+	h2
+		| Exhibits in 
+		= data.meta.title

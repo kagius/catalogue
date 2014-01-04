@@ -38,14 +38,6 @@ module.exports = class Catalogue
 				.exec callback
 
 		@exhibit = (callback, country, locality, site, exhibit) ->
-			Hierarchy						
-				.aggregate()
-				.match({"code" : country.toLowerCase() })
-				.unwind('localities')
-				.match({"localities.code" : locality.toLowerCase() })
-				.unwind('localities.sites')
-				.match({"localities.sites.code" : site.toLowerCase() })
-				.unwind('localities.sites.exhibits')
-				.match({"localities.sites.exhibits.code" : exhibit.toLowerCase() })
-				.project("code url localities.code localities.url localities.sites.code localities.sites.url localities.sites.exhibits")						
+			Exhibits
+				.findById(country.toLowerCase() + "/" + locality.toLowerCase() + "/" + site.toLowerCase() + "/" + exhibit.toLowerCase())
 				.exec callback

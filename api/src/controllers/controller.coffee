@@ -1,6 +1,6 @@
-module.exports = class HtmlController
+module.exports = class CatalogueController
 
-	constructor : (@app, @baseUrl) ->
+	constructor : (@app, @baseUrl, @writer) ->
 
 		self = @
 
@@ -38,6 +38,17 @@ module.exports = class HtmlController
 				callback model
 			, parameterValue, model.language
 
+		@finalize = (model, handler, callback) ->
+			response = {}
+			response.meta = model.meta			
+			response.url = self.app.config.globals.baseUrl + "/" + model.url
+			response.content = self.app.renderer.render handler.htmlTemplate, model
+
+			if (model.data.type)
+				response.meta.type = model.data.type
+
+			callback null, response
+
 		@handlers = [
 			{
 				name: "exhibit",
@@ -45,7 +56,22 @@ module.exports = class HtmlController
 				routes: [ "/:country/:location/:site/:exhibit" ],
 				version: "1.0.0",
 				htmlTemplate: "exhibit-detail",
-				implementation: self.query
+				writer: self.writer,
+				implementation: (req, handler, callback) -> 
+
+					self.query req, (err, data) ->
+
+						data.language = "en"
+
+						countryUrl = req.params.country.toLowerCase()
+						locationUrl = countryUrl + "/" + req.params.location.toLowerCase()
+						siteUrl = locationUrl + "/" + req.params.site.toLowerCase()
+
+						self.localize data, (model) ->
+							self.addLocalizedParameter model, "country", countryUrl, (model) ->								
+								self.addLocalizedParameter model, "locality", locationUrl, (model) ->
+									self.addLocalizedParameter model, "site", siteUrl, (model) ->
+										self.finalize model, handler, callback
 			},
 
 			{
@@ -54,23 +80,20 @@ module.exports = class HtmlController
 				routes: [ "/:country/:location/:site" ],
 				version: "1.0.0",
 				htmlTemplate: "exhibit-list",
-				implementation: (req, callback) -> 
+				writer: self.writer,
+				implementation: (req, handler, callback) -> 
 
 					self.query req, (err, data) ->
 
 						data.language = "en"
+						countryUrl = req.params.country.toLowerCase()
+						locationUrl = countryUrl + "/" + req.params.location.toLowerCase()
 
 						self.localize data, (model) ->
 							self.localizeChildCollection model, "exhibits", (model) ->
-								self.addLocalizedParameter model, "country", req.params.country.toLowerCase(), (model) ->								
-									self.addLocalizedParameter model, "locality", req.params.country.toLowerCase() + "/" + req.params.location.toLowerCase(), (model) ->								
-										# Build the response model.
-										response = {}
-										response.meta = model.meta
-										response.url = self.app.config.globals.baseUrl + "/" + model.url
-										response.content = self.app.renderer.render "exhibit-list", model
-
-										callback null, response
+								self.addLocalizedParameter model, "country", countryUrl, (model) ->								
+									self.addLocalizedParameter model, "locality", locationUrl, (model) ->							
+										self.finalize model, handler, callback
 			},
 
 			{
@@ -79,7 +102,8 @@ module.exports = class HtmlController
 				routes: [ "/:country/:location" ],
 				version: "1.0.0",
 				htmlTemplate: "site-list",
-				implementation: (req, callback) -> 
+				writer: self.writer,
+				implementation: (req, handler, callback) -> 
 
 					self.query req, (err, data) ->
 
@@ -88,13 +112,7 @@ module.exports = class HtmlController
 						self.localize data, (model) ->
 							self.localizeChildCollection model, "sites", (model) ->
 								self.addLocalizedParameter model, "country", req.params.country.toLowerCase(), (model) ->				
-									# Build the response model.
-									response = {}
-									response.meta = model.meta
-									response.url = self.app.config.globals.baseUrl + "/" + model.url
-									response.content = self.app.renderer.render "site-list", model
-
-									callback null, response
+									self.finalize model, handler, callback
 			},
 
 			{
@@ -103,7 +121,8 @@ module.exports = class HtmlController
 				routes: [ "/:country" ],
 				version: "1.0.0",
 				htmlTemplate: "location-list",
-				implementation: (req, callback) -> 
+				writer: self.writer,
+				implementation: (req, handler, callback) -> 
 
 					self.query req, (err, data) ->
 
@@ -111,13 +130,7 @@ module.exports = class HtmlController
 
 						self.localize data, (model) ->
 							self.localizeChildCollection model, "localities", (model) ->
-								# Build the response model.
-								response = {}
-								response.meta = model.meta
-								response.url = self.app.config.globals.baseUrl + "/" + model.url
-								response.content = self.app.renderer.render "location-list", model
-
-								callback null, response						
+								self.finalize model, handler, callback					
 			},
 
 			{
@@ -126,7 +139,8 @@ module.exports = class HtmlController
 				routes: ["/"],
 				version: "1.0.0",
 				htmlTemplate: "country-list",
-				implementation: (req, callback) -> 
+				writer: self.writer,
+				implementation: (req, handler, callback) -> 
 					self.query req, (err, data) ->
 
 						data.language = "en"
@@ -139,16 +153,8 @@ module.exports = class HtmlController
 
 							self.app.model.Text.getTitles (err, list) ->
 								model.children = list								
-
-								# Build the response model.
-								response = {}
-								response.meta = model.meta
-								response.url = self.app.config.globals.baseUrl + "/" + model.url
-								response.content = self.app.renderer.render "country-list", model
-
-								callback null, response
-
-							, countries, "en"							
+								self.finalize model, handler, callback
+							, countries, data.language
 			}
 		]
 

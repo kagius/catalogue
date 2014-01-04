@@ -17,14 +17,33 @@ html(lang="en")
 		link(rel="shortcut icon", type="image/x-icon", href="#{ globals.baseUrl }/assets/favicon.ico")
 		link(rel="canonical", href="#{data.meta.url}")
 	body
-		div.container
-			section#content
-				block content
+		div.navbar.navbar-inverse(role="navigation")
+			div.container
+				div.navbar-header          
+					//-
+						button.navbar-toggle(type="button",data-toggle="collapse",data-target=".navbar-collapse")
+							span.sr-only Toggle navigation
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
 
-			section#type(style="display:none")
-				block type
+					a.navbar-brand(href="/") TBD
+
+				//-
+					div.navbar-collapse.collapse
+						ul.nav.navbar-nav
+							li					
+								a(href="/about") About
+							li
+								a(href="/contact") Contact
+
+		div.container
+			section#content!= data.content				
 
 			div#loader(style="display:none")
 				| Loading ...
+
+			footer
+				| Page footer
 
 		script(src="#{ globals.baseUrl }/assets/scripts/require.js", data-main="/assets/scripts/global")

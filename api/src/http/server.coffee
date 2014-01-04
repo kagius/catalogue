@@ -17,29 +17,17 @@ module.exports = class Server
 		@setRoute = (method, route, callback) ->
 			self.server[method] route, callback
 
-		@answer = (req, res, next, data, template) ->
+		@jsonWriter = (res, data) ->
+			res.setHeader 'content-type', 'application/json'
+			res.send data
 
-			if self.app.config.logging.trace
-				console.log data
-
-			format = if req.params.format then req.params.format else "html"
-
-			if self.app.config.logging.trace
-				console.log "Preparing response in format: #{format}"				
-			
-			if self.app.config.headers.accessControlAllowOrigins
-				res.setHeader 'Access-Control-Allow-Origin', self.app.config.headers.accessControlAllowOrigins
-			
-			if format == "json"
-				res.setHeader 'content-type', 'application/json'
-				res.send data
-			else				
-				body = self.app.renderer.render template, data
+		@htmlWriter = (res, data, next) ->
+			body = self.app.renderer.render "layout", data
 				
-				res.writeHead 200, { 'Content-Type': 'text/html', 'Content-Length' : body.length }
-				res.write body
-				res.end()
-				next()
+			res.writeHead 200, { 'Content-Type': 'text/html', 'Content-Length' : body.length }
+			res.write body
+			res.end()
+			next()
 
 		@generateHandler = (name, handler) ->
 			return (req, res, next) ->
@@ -47,11 +35,14 @@ module.exports = class Server
 					console.log "Routing request to #{name}"
 					console.log req.params
 
-				handler.implementation req, (err, data) ->
+				handler.implementation req, handler, (err, data) ->
 					if err
 						console.log  err
 
-					self.answer req, res, next, data, handler.htmlTemplate
+					if self.app.config.headers.accessControlAllowOrigins
+						res.setHeader 'Access-Control-Allow-Origin', self.app.config.headers.accessControlAllowOrigins
+
+					handler.writer res, data, next
 
 		@_route = (method, route, version, name, implementation) ->
 			if self.app.config.logging.trace

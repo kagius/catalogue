@@ -52,10 +52,12 @@ require(['jquery', 'jquery.history'], function ($) {
 
 	// Override the default click handler for internal links.
 	$(document.body).on('click', 'a:not([href^=http])' , function(){		
-		var link = $(this);
-		var url = link.attr("href");
 
-		History.pushState(null, null, url);
+        // Grab the href from the anchor and push it to history.
+		History.pushState(null, null, $(this).attr("href"));
+
+        // Return false to prevent the normal link behaviour from firing.
+        // (We don't want the browser to reload the page)
         return false;
 	});
 });

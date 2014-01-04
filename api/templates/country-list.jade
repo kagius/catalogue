@@ -1,5 +1,8 @@
-div= data.content
+extends ./base-list
 
-div.list-group
-	for location in data.children
-		a.list-group-item(href="/" + location.url)= location.meta.title
+block breadcrumbs
+
+block title
+	h1
+		a(href="/")
+			| Countries

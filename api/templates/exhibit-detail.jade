@@ -1,12 +1,19 @@
-ol.breadcrumb
-	li
-		a(href="/" + data[0].url)= data[0].code
-	li
-		a(href="/" + data[0].localities.url)= data[0].localities.code
-	li
-		a(href="/" + data[0].localities.sites.url)= data[0].localities.sites.code
-	li
-		a(href="/" + data[0].localities.sites.exhibits.url)= data[0].localities.sites.exhibits.code
+block content
+	ol.breadcrumb
+		li
+			a(href="/") Home
+		li
+			a(href="/" + data.country.url)= data.country.label
+		li
+			a(href="/" + data.locality.url)= data.locality.label
+		li
+			a(href="/" + data.site.url)= data.site.label
 
-h1
-	= data[0].localities.sites.exhibits.code
+	if data.meta.title
+		h1
+			a(href="/" + data.url)= data.meta.title
+
+	if data.content
+		div!= data.content
+
+		div#type

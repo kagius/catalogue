@@ -20,7 +20,7 @@ MongoClient.connect("mongodb://localhost/testcat", function(err, db) {
 			{
 				_id: "mt/valletta/palace-armoury",
 				locality: "mt/valletta",
-				exhibits: []
+				exhibits: ["mt/valletta/palace-armoury/longsword"]
 			},
 			{
 				_id: "mt/birgu/maritime-museum",

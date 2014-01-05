@@ -30,7 +30,7 @@ app.model.Text = new Text app
 app.renderer = new JadeRenderer app
 
 # Register controllers.
-app.controllers.CatalogueApi = new CatalogueController app, "/api/:format", app.server.jsonWriter
+app.controllers.CatalogueApi = new CatalogueController app, "/api", app.server.jsonWriter
 app.controllers.CatalogueWeb = new CatalogueController app, "", app.server.htmlWriter
 
 # Start accepting http requests.

@@ -36,7 +36,7 @@ require(['jquery', 'jquery.history'], function ($) {
 
         var jsonUrl = (hash == "/") ? "" : hash;
 
-        $.get("/api/json" + jsonUrl).done(function(data) {
+        $.get("/api" + jsonUrl).done(function(data) {
             local[hash] = data;                
             callback(local[hash]);
         })

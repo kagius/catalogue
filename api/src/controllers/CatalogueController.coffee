@@ -16,14 +16,15 @@ module.exports = class CatalogueController
 
 		@localize = (data, callback) ->
 
-			model = {}
-			model.data = data
-			model.language = data.language
+			model = { 
+				data: data, 
+				language: data.language,
+				url: data._id
+			}
 
 			self.app.model.Text.find (err, text) ->
 				model.meta = text.meta
 				model.meta.url = self.app.config.globals.baseUrl + "/" + data._id
-				model.url = data._id
 				model.content = text.content
 
 				callback model
@@ -38,18 +39,16 @@ module.exports = class CatalogueController
 
 		@addLocalizedParameter = (model, parameterName, parameterValue, callback) ->
 			self.app.model.Text.find (err, text) ->
-				model[parameterName] = {}
-				model[parameterName].label = text.meta.title
-				model[parameterName].url = text.url
-
+				model[parameterName] = { label: text.meta.title, url: text.url }
 				callback model
 			, parameterValue, model.language
 
 		@finalize = (model, handler, callback) ->
-			response = {}
-			response.meta = model.meta			
-			response.url = self.app.config.globals.baseUrl + "/" + model.url
-			response.content = self.app.renderer.render handler.htmlTemplate, model
+			response = {
+				meta: model.meta
+				url: self.app.config.globals.baseUrl + "/" + model.url
+				content: self.app.renderer.render handler.htmlTemplate, model
+			}
 
 			if (model.data.type)
 				response.meta.type = model.data.type

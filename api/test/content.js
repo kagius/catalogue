@@ -142,6 +142,24 @@ MongoClient.connect("mongodb://localhost/testcat", function(err, db) {
 			},
 
 			content: "some text about the longsword"
+		},
+
+		{
+			url : "404",
+
+			language: {
+				country: "GB",
+				locale: "en-GB",
+				language : "en"
+			},
+
+			meta: {
+				title: "This is not the page you are looking for",
+				description: "Whatever it was you were looking for isn't here",
+				keywords: "not found",	
+			},
+
+			content: "Not found!"
 		}
 		], callback);	
 

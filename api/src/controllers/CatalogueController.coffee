@@ -4,6 +4,13 @@ module.exports = class CatalogueController
 
 		self = @
 
+		@contentNotFound = (language, handler, callback)->
+
+			data = { _id:"404", language:language }
+			self.localize data, (model)->
+				model.httpStatus = 404				
+				self.finalize model, { htmlTemplate: "404" }, callback
+
 		@query = (req, callback) ->
 			self.app.model.Catalogue.find callback, req.params.country, req.params.location, req.params.site, req.params.exhibit
 
@@ -61,6 +68,10 @@ module.exports = class CatalogueController
 
 					self.query req, (err, data) ->
 
+						if !data
+							self.contentNotFound "en", handler, callback
+							return
+
 						data.language = "en"
 
 						countryUrl = req.params.country.toLowerCase()
@@ -85,6 +96,10 @@ module.exports = class CatalogueController
 
 					self.query req, (err, data) ->
 
+						if !data
+							self.contentNotFound "en", handler, callback
+							return
+
 						data.language = "en"
 						countryUrl = req.params.country.toLowerCase()
 						locationUrl = countryUrl + "/" + req.params.location.toLowerCase()
@@ -107,8 +122,11 @@ module.exports = class CatalogueController
 
 					self.query req, (err, data) ->
 
-						data.language = "en"
+						if !data
+							self.contentNotFound "en", handler, callback
+							return
 
+						data.language = "en"
 						self.localize data, (model) ->
 							self.localizeChildCollection model, "sites", (model) ->
 								self.addLocalizedParameter model, "country", req.params.country.toLowerCase(), (model) ->				
@@ -125,6 +143,10 @@ module.exports = class CatalogueController
 				implementation: (req, handler, callback) -> 
 
 					self.query req, (err, data) ->
+						
+						if !data
+							self.contentNotFound "en", handler, callback
+							return
 
 						data.language = "en"
 
@@ -142,6 +164,10 @@ module.exports = class CatalogueController
 				writer: self.writer,
 				implementation: (req, handler, callback) -> 
 					self.query req, (err, data) ->
+
+						if !data
+							self.contentNotFound "en", handler, callback
+							return
 
 						data.language = "en"
 						data._id = ""

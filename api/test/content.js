@@ -160,6 +160,24 @@ MongoClient.connect("mongodb://localhost/testcat", function(err, db) {
 			},
 
 			content: "Not found!"
+		},
+
+		{
+			url : "types/longsword",
+
+			language: {
+				country: "GB",
+				locale: "en-GB",
+				language : "en"
+			},
+
+			meta: {
+				title: "About longswords",
+				description: "Some information about longswords",
+				keywords: "longsword, bastard sword, two handed sword",	
+			},
+
+			content: "Information about the longsword"
 		}
 		], callback);	
 

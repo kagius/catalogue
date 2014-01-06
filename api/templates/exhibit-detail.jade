@@ -14,6 +14,9 @@ block content
 			a(href="/" + data.url)= data.meta.title
 
 	if data.content
-		div!= data.content
+		div#exhibit!= data.content
 
-		div#type
+	if data.type	
+		h2= data.type.meta.title
+
+		div#type!= data.type.content

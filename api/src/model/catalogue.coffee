@@ -1,4 +1,3 @@
-Hierarchy = require "./hierarchy"
 Countries = require "./schema_country"
 Localities = require "./schema_locality"
 Sites = require "./schema_site"

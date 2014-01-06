@@ -50,9 +50,6 @@ module.exports = class CatalogueController
 				content: self.app.renderer.render handler.htmlTemplate, model
 			}
 
-			if (model.data.type)
-				response.meta.type = model.data.type
-
 			callback null, response
 
 		@handlers = [
@@ -75,13 +72,15 @@ module.exports = class CatalogueController
 
 						countryUrl = req.params.country.toLowerCase()
 						locationUrl = countryUrl + "/" + req.params.location.toLowerCase()
-						siteUrl = locationUrl + "/" + req.params.site.toLowerCase()
+						siteUrl = locationUrl + "/" + req.params.site.toLowerCase()					
 
 						self.localize data, (model) ->
 							self.addLocalizedParameter model, "country", countryUrl, (model) ->								
 								self.addLocalizedParameter model, "locality", locationUrl, (model) ->
 									self.addLocalizedParameter model, "site", siteUrl, (model) ->
-										self.finalize model, handler, callback
+										self.localize { _id: "types/" + model.data.type, language: model.language }, (type) ->
+											model.type = type
+											self.finalize model, handler, callback
 			},
 
 			{

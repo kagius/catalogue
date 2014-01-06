@@ -13,10 +13,10 @@ require(['jquery', 'jquery.history', 'ga'], function ($) {
 	var local = {};
 
     // Set up google analytics
-    window.ga('create', 'UA-46857586-1');
+    window.ga('create', 'UA-46857586-1', { 'cookieDomain': 'none' });
     window.ga('send', 'pageview');
 
-    var updateContent = function(data) {
+    var updateContent = function(hash, data) {
 
         // Update page metadata
         document.title = data.meta.title;
@@ -30,13 +30,15 @@ require(['jquery', 'jquery.history', 'ga'], function ($) {
 
         // Update page content
         content.html(data.content);
+
+        window.ga('send', 'pageview', { page: hash, title: data.meta.title });
     }
 
     var load = function(hash, callback) {
 
         // If we downloaded this already, fetch from our local stash
         if (local[hash]) {
-            callback(local[hash]);
+            callback(hash, local[hash]);
             return;
         }
 
@@ -48,7 +50,7 @@ require(['jquery', 'jquery.history', 'ga'], function ($) {
 
         $.get("/api" + jsonUrl).done(function(data) {
             local[hash] = data;                
-            callback(local[hash]);
+            callback(hash, local[hash]);
         })
     }
 
@@ -71,9 +73,6 @@ require(['jquery', 'jquery.history', 'ga'], function ($) {
 
         // Grab the href from the anchor and push it to history.
 		History.pushState(null, null, target);
-
-        // Notify Google analytics.
-        window.ga("send", "event", "link", "click", "content", target);
 
         // Return false to prevent the normal link behaviour from firing.
         // (We don't want the browser to reload the page)

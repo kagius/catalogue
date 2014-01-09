@@ -1,0 +1,9 @@
+if data.meta.title
+	h1
+		a(href="/" + data.url)= data.meta.title
+
+if data.content
+	div#contact!= data.content
+
+form(method="post", action="/" + data.url)
+	input(type="submit", value="Send")

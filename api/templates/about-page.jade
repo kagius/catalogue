@@ -1,0 +1,6 @@
+if data.meta.title
+	h1
+		a(href="/" + data.url)= data.meta.title
+
+if data.content
+	div#copy!= data.content

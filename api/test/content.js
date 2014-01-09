@@ -163,6 +163,42 @@ MongoClient.connect("mongodb://localhost/testcat", function(err, db) {
 		},
 
 		{
+			url : "page/about",
+
+			language: {
+				country: "GB",
+				locale: "en-GB",
+				language : "en"
+			},
+
+			meta: {
+				title: "About",
+				description: "Some information about this site",
+				keywords: "about",	
+			},
+
+			content: "Some information about this site."
+		},
+
+		{
+			url : "page/contact",
+
+			language: {
+				country: "GB",
+				locale: "en-GB",
+				language : "en"
+			},
+
+			meta: {
+				title: "Contact",
+				description: "contact us",
+				keywords: "contact form",	
+			},
+
+			content: "You can use this form to contact us."
+		},
+
+		{
 			url : "types/longsword",
 
 			language: {

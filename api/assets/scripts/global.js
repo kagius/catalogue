@@ -4,7 +4,7 @@ requirejs.config({
     }
 });
 
-require(['jquery', 'jquery.history', 'ga'], function ($) {
+require(['jquery', 'jquery.history', 'ga', 'collapse'], function ($) {
 'use strict';
 
 	var content = $("#content");

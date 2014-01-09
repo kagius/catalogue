@@ -20,22 +20,20 @@ html(lang="en")
 		div.navbar.navbar-inverse(role="navigation")
 			div.container
 				div.navbar-header          
-					//-
-						button.navbar-toggle(type="button",data-toggle="collapse",data-target=".navbar-collapse")
-							span.sr-only Toggle navigation
-							span.icon-bar
-							span.icon-bar
-							span.icon-bar
+					button.navbar-toggle(type="button",data-toggle="collapse",data-target=".navbar-collapse")
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
 
 					a.navbar-brand(href="/") TBD
 
-				//-
-					div.navbar-collapse.collapse
-						ul.nav.navbar-nav
-							li					
-								a(href="/about") About
-							li
-								a(href="/contact") Contact
+				div.navbar-collapse.collapse
+					ul.nav.navbar-nav
+						li					
+							a(href="/about") About
+						li
+							a(href="/contact") Contact
 
 		div.container
 			section#content!= data.content				

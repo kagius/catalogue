@@ -9,6 +9,7 @@ require(['jquery', 'jquery.history', 'ga', 'collapse'], function ($) {
 
 	var content = $("#content");
 	var loader = $("#loader");
+    var lang = $("html").attr("lang");
 
 	var local = {};
 

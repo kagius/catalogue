@@ -1,17 +1,21 @@
 block content
 	ol.breadcrumb
 		li
-			a(href="/") Home
+			a(href="/#{data.language}") Home
 		li
-			a(href="/" + data.country.url)= data.country.label
+			a(href="/#{data.language}/#{data.country.url}")= data.country.label
 		li
-			a(href="/" + data.locality.url)= data.locality.label
+			a(href="/#{data.language}/#{data.locality.url}")= data.locality.label
 		li
-			a(href="/" + data.site.url)= data.site.label
+			a(href="/#{data.language}/#{data.site.url}")= data.site.label
+
+	if data.meta.fallback
+		div.alert.alert-danger
+			| This page is not available in your selected language. Showing default.
 
 	if data.meta.title
 		h1
-			a(href="/" + data.url)= data.meta.title
+			a(href="/#{data.language}/#{data.url}")= data.meta.title
 
 	if data.content
 		div#exhibit!= data.content

@@ -1,6 +1,6 @@
 if data.meta.title
 	h1
-		a(href="/" + data.url)= data.meta.title
+		a(href="/#{data.language}/#{data.url}")= data.meta.title
 
 if data.content
 	div!= data.content

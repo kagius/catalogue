@@ -32,22 +32,32 @@ module.exports = class CatalogueController
 			, data._id, model.language
 
 		@localizeChildCollection = (model, childCollectionName, callback) ->
+
+			childLanguage = model.language
+			if model.meta.fallback
+				childLanguage = model.meta.fallback
+
 			self.app.model.Text.getTitles (err, list) ->
 				model.children = list
 				callback model
-			, model.data[childCollectionName], model.language
+			, model.data[childCollectionName], childLanguage
 
 		@addLocalizedParameter = (model, parameterName, parameterValue, callback) ->
+			childLanguage = model.language
+			if model.meta.fallback
+				childLanguage = model.meta.fallback
+
 			self.app.model.Text.find (err, text) ->
 				model[parameterName] = { label: text.meta.title, url: text.url }
 				callback model
-			, parameterValue, model.language
+			, parameterValue, childLanguage
 
 		@finalize = (model, handler, callback) ->
 			response = {
 				meta: model.meta
 				url: self.app.config.globals.baseUrl + "/" + model.url
 				content: self.app.renderer.render handler.htmlTemplate, model
+				language: model.language
 			}
 
 			callback null, response
@@ -65,10 +75,10 @@ module.exports = class CatalogueController
 					self.query req, (err, data) ->
 
 						if !data
-							self.contentNotFound "en", handler, callback
+							self.contentNotFound req.params.language, handler, callback
 							return
 
-						data.language = "en"
+						data.language = req.params.language
 
 						countryUrl = req.params.country.toLowerCase()
 						locationUrl = countryUrl + "/" + req.params.location.toLowerCase()
@@ -95,10 +105,10 @@ module.exports = class CatalogueController
 					self.query req, (err, data) ->
 
 						if !data
-							self.contentNotFound "en", handler, callback
+							self.contentNotFound req.params.language, handler, callback
 							return
 
-						data.language = "en"
+						data.language = req.params.language
 						countryUrl = req.params.country.toLowerCase()
 						locationUrl = countryUrl + "/" + req.params.location.toLowerCase()
 
@@ -121,10 +131,10 @@ module.exports = class CatalogueController
 					self.query req, (err, data) ->
 
 						if !data
-							self.contentNotFound "en", handler, callback
+							self.contentNotFound req.params.language, handler, callback
 							return
 
-						data.language = "en"
+						data.language = req.params.language
 						self.localize data, (model) ->
 							self.localizeChildCollection model, "sites", (model) ->
 								self.addLocalizedParameter model, "country", req.params.country.toLowerCase(), (model) ->				
@@ -143,10 +153,10 @@ module.exports = class CatalogueController
 					self.query req, (err, data) ->
 						
 						if !data
-							self.contentNotFound "en", handler, callback
+							self.contentNotFound req.params.language, handler, callback
 							return
 
-						data.language = "en"
+						data.language = req.params.language
 
 						self.localize data, (model) ->
 							self.localizeChildCollection model, "localities", (model) ->
@@ -164,13 +174,17 @@ module.exports = class CatalogueController
 					self.query req, (err, data) ->
 
 						if !data
-							self.contentNotFound "en", handler, callback
+							self.contentNotFound req.params.language, handler, callback
 							return
 
-						data.language = "en"
+						data.language = req.params.language
 						data._id = ""
 						
 						self.localize data, (model) ->
+
+							childLanguage = model.language
+							if model.meta.fallback
+								childLanguage = model.meta.fallback
 
 							countries = []
 							countries.push(item.id) for item in model.data
@@ -178,7 +192,7 @@ module.exports = class CatalogueController
 							self.app.model.Text.getTitles (err, list) ->
 								model.children = list								
 								self.finalize model, handler, callback
-							, countries, data.language
+							, countries, childLanguage
 			}
 		]
 

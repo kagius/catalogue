@@ -31,10 +31,11 @@ app.model.Text = new Text app
 app.renderer = new JadeRenderer app
 
 # Register controllers.
-app.controllers.PageApi = new PageController app, "/api", app.server.jsonWriter
-app.controllers.PageWeb = new PageController app, "", app.server.htmlWriter
-app.controllers.CatalogueApi = new CatalogueController app, "/api", app.server.jsonWriter
-app.controllers.CatalogueWeb = new CatalogueController app, "", app.server.htmlWriter
+app.controllers.DefaultPageApi = new PageController app, "/api/:language", app.server.jsonWriter
+app.controllers.DefaultPageWeb = new PageController app, "/:language", app.server.htmlWriter
+
+app.controllers.DefaultCatalogueApi = new CatalogueController app, "/api/:language", app.server.jsonWriter
+app.controllers.DefaultCatalogueWeb = new CatalogueController app, "/:language", app.server.htmlWriter
 
 # Start accepting http requests.
 app.server.start()

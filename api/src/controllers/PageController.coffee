@@ -46,7 +46,7 @@ module.exports = class PageController
 				htmlTemplate: "about-page",
 				writer: self.writer,
 				implementation: (req, handler, callback) -> 
-					data = { _id: "page/about", language: "en" }
+					data = { _id: "page/about", language: req.params.language }
 
 					self.localize data, (model) ->
 						self.finalize model, handler, callback
@@ -60,7 +60,7 @@ module.exports = class PageController
 				htmlTemplate: "contact-page",
 				writer: self.writer,
 				implementation: (req, handler, callback) -> 
-					data = { _id: "page/contact", language: "en" }
+					data = { _id: "page/contact", language: req.params.language }
 
 					self.localize data, (model) ->
 						self.finalize model, handler, callback
@@ -74,7 +74,7 @@ module.exports = class PageController
 				htmlTemplate: "contact-page",
 				writer: self.writer,
 				implementation: (req, handler, callback) -> 
-					data = { _id: "page/contact", language: "en" }
+					data = { _id: "page/contact", language: req.params.language }
 
 					self.localize data, (model) ->
 						self.finalize model, handler, callback

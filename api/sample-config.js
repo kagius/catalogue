@@ -11,6 +11,8 @@ module.exports = {
 		baseUrl: "http://localhost:8080"
 	},
 
+	defaultLanguage: "en",
+
 	// Static file service directory.
 	// To be moved into ngnix eventually
 	assets: {

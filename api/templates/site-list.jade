@@ -1,12 +1,5 @@
 extends ./base-list
 
-block breadcrumbs
-	ol.breadcrumb
-		li
-			a(href="/") Home
-		li
-			a(href="/" + data.country.url)= data.country.label
-
 block subtitle
 	h2
 		| Sites in 

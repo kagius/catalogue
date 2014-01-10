@@ -1,9 +1,13 @@
+if data.meta.fallback
+	div.alert.alert-danger
+		| This page is not available in your selected language. Showing default.
+
 if data.meta.title
 	h1
-		a(href="/" + data.url)= data.meta.title
+		a(href="/#{data.language}/#{data.url}")= data.meta.title
 
 if data.content
 	div#contact!= data.content
 
-form(method="post", action="/" + data.url)
+form(method="post", action="/#{data.language}/#{data.url}")
 	input(type="submit", value="Send")

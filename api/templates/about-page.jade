@@ -1,3 +1,7 @@
+if data.meta.fallback
+	div.alert.alert-danger
+		| This page is not available in your selected language. Showing default.
+
 if data.meta.title
 	h1
 		a(href="/" + data.url)= data.meta.title

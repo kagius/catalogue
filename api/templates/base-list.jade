@@ -1,9 +1,28 @@
 block breadcrumbs
+	ol.breadcrumb
+		li
+			a(href="/#{data.language}") Home
+
+		if data.country
+			li
+				a(href="/#{data.language}/#{data.country.url}")= data.country.label
+
+		if (data.locality)
+			li
+				a(href="/#{data.language}/#{data.locality.url}")= data.locality.label
+
+		if (data.site)
+			li
+				a(href="/#{data.language}/#{data.site.url}")= data.site.label
+
+if data.meta.fallback
+	div.alert.alert-danger
+		| This page is not available in your selected language. Showing default.
 
 block title
 	if data.meta.title
 		h1
-			a(href="/" + data.url)= data.meta.title
+			a(href="/#{data.language}/#{data.url}")= data.meta.title
 			
 if data.content
 	div!= data.content
@@ -13,7 +32,7 @@ if data.children.length > 0
 	
 	div.list-group
 		for child in data.children
-			a.list-group-item(href="/" + child.url)= child.meta.title
+			a.list-group-item(href="/#{data.language}/#{child.url}")= child.meta.title
 
 unless data.children.length > 0
 	div.alert.alert-warning

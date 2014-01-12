@@ -1,4 +1,4 @@
-module.exports = class PageController
+module.exports = class LanguageSelectorController
 
 	constructor : (@app, @baseUrl, @writer) ->
 
@@ -29,56 +29,27 @@ module.exports = class PageController
 			, data._id, model.language
 
 		@finalize = (model, handler, callback) ->
-			model.i18n = self.app.resources.get(model.language)
-
 			response = {
 				meta: model.meta
 				url: self.app.config.globals.baseUrl + "/" + model.url
-				content: self.app.renderer.render(handler.htmlTemplate, model)
+				content: self.app.renderer.render handler.htmlTemplate, model
 			}
 
 			callback null, response
 
 		@handlers = [
 			{
-				name: "about",
+				name: "selectLanguage",
 				method: "get",
-				routes: [ "/about" ],
+				routes: [ "" ],
 				version: "1.0.0",
-				htmlTemplate: "about-page",
+				htmlTemplate: "select-language-page",
 				writer: self.writer,
 				implementation: (req, handler, callback) -> 
-					data = { _id: "page/about", language: req.params.language }
+					data = { _id: "page/select-language", language: "en" }
 
 					self.localize data, (model) ->
-						self.finalize model, handler, callback
-			},
-
-			{
-				name: "contact",
-				method: "get",
-				routes: [ "/contact" ],
-				version: "1.0.0",
-				htmlTemplate: "contact-page",
-				writer: self.writer,
-				implementation: (req, handler, callback) -> 
-					data = { _id: "page/contact", language: req.params.language }
-
-					self.localize data, (model) ->
-						self.finalize model, handler, callback
-			},
-
-			{
-				name: "doContact",
-				method: "post",
-				routes: [ "/contact" ],
-				version: "1.0.0",
-				htmlTemplate: "contact-page",
-				writer: self.writer,
-				implementation: (req, handler, callback) -> 
-					data = { _id: "page/contact", language: req.params.language }
-
-					self.localize data, (model) ->
+						model.meta.nolinks = true
 						self.finalize model, handler, callback
 			},
 		]

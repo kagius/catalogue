@@ -214,7 +214,27 @@ MongoClient.connect("mongodb://localhost/testcat", function(err, db) {
 			},
 
 			content: "Information about the longsword"
+		},
+
+		{
+			url : "page/select-language",
+
+			language: {
+				country: "GB",
+				locale: "en-GB",
+				language : "en"
+			},
+
+			meta: {
+				title: "Select language",
+				description: "select language",
+				keywords: "select language",	
+			},
+
+			content: ""
 		}
+
+
 		], callback);	
 
 

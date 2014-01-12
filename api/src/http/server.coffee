@@ -22,6 +22,8 @@ module.exports = class Server
 			res.send data
 
 		@htmlWriter = (res, data, next) ->
+
+			data.i18n = self.app.resources.get(data.language)
 			body = self.app.renderer.render "layout", data
 
 			# To do - Handle 404 and 500 messages				

@@ -21,7 +21,7 @@ module.exports = class CatalogueController
 				language: data.language,
 				url: data._id
 			}
-
+			console.log model
 			self.app.model.Text.find (err, text) ->
 				model.meta = text.meta
 				model.meta.url = self.app.config.globals.baseUrl + "/" + data._id
@@ -53,11 +53,13 @@ module.exports = class CatalogueController
 			, parameterValue, childLanguage
 
 		@finalize = (model, handler, callback) ->
+			model.i18n = self.app.resources.get(model.language)
+
 			response = {
-				meta: model.meta
-				url: self.app.config.globals.baseUrl + "/" + model.url
-				content: self.app.renderer.render handler.htmlTemplate, model
-				language: model.language
+				meta: model.meta,
+				url: self.app.config.globals.baseUrl + "/" + model.url,
+				content: self.app.renderer.render(handler.htmlTemplate, model),
+				language: model.language,
 			}
 
 			callback null, response

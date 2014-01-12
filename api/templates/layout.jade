@@ -2,7 +2,8 @@ doctype html
 html(lang=data.language)
 	head				
 		title= data.meta.title
-		
+		meta(charset="utf-8")
+
 		meta(name="description", content="#{data.meta.description}")
 		meta(name="keywords", content="#{data.meta.keywords}")
 
@@ -22,28 +23,32 @@ html(lang=data.language)
 				link(rel="alternate", hreflang="alt.lang" href="alt.url")
 	body
 		div.navbar.navbar-inverse(role="navigation")
+
 			div.container
-				div.navbar-header          
-					button.navbar-toggle(type="button",data-toggle="collapse",data-target=".navbar-collapse")
-						span.sr-only Toggle navigation
-						span.icon-bar
-						span.icon-bar
-						span.icon-bar
+				unless data.meta.nolinks
+					div.navbar-header
+						button.navbar-toggle(type="button",data-toggle="collapse",data-target=".navbar-collapse")
+							span.sr-only Toggle navigation
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
 
-					a.navbar-brand(href="/#{data.language}") TBD
+						a.navbar-brand(href="/#{data.language}") TBD
 
-				div.navbar-collapse.collapse
-					ul.nav.navbar-nav
-						li					
-							a(href="/#{data.language}/about") About
-						li
-							a(href="/#{data.language}/contact") Contact
+					div.navbar-collapse.collapse
+						ul.nav.navbar-nav
+							li					
+								a(href="/#{data.language}/about")= data.i18n.about
+							li
+								a(href="/#{data.language}/contact")= data.i18n.contact
+				if data.meta.nolinks
+					div.navbar-header
+						span.navbar-brand TBD
 
 		div.container
 			section#content!= data.content				
 
-			div#loader(style="display:none")
-				| Loading ...
+			div#loader(style="display:none")= data.i18n.loading
 
 			footer
 				| Page footer

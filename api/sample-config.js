@@ -8,21 +8,23 @@ module.exports = {
 	port: 8080,
 
 	globals: {
-		baseUrl: "http://localhost:8080"
+		baseUrl: "http://www.tbd.org"
 	},
 
 	defaultLanguage: "en",
 
 	// Static file service directory.
-	// To be moved into ngnix eventually
+	// If servestatic is true, the server will take care of static file requests. 
+	// Otherwise, they will be handled by the web server.
 	assets: {
+		serveStatic: false,
 		baseUrlPattern: /\/assets\/?.*/,
 		basePath: "./assets",
 	},
 
 	headers: {
 		// Ajax cross-domain whitelists
-		accessControlAllowOrigins: "http://127.0.0.1:8000"
+		//accessControlAllowOrigins: "http://127.0.0.1:8000"
 	},
 
  	templates: {

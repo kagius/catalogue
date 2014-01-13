@@ -4,7 +4,7 @@ requirejs.config({
     }
 });
 
-require(['jquery', 'jquery.history', 'ga', 'collapse'], function ($) {
+require(['jquery', 'jquery.history', 'ga', 'collapse', 'dropdown'], function ($) {
 'use strict';
 
 	var content = $("#content");
@@ -28,6 +28,10 @@ require(['jquery', 'jquery.history', 'ga', 'collapse'], function ($) {
 
         $("link[rel='canonical']").attr("href", data.url);
         $("meta[property='og:url']").attr("content", data.url);
+        $(".languages a").each(function() {
+           var link = $(this);
+           link.attr("href", link.data("base") + data.path);
+        });
 
         // Update page content
         content.html(data.content);

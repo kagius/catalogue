@@ -24,7 +24,8 @@ module.exports = class CatalogueController
 			console.log model
 			self.app.model.Text.find (err, text) ->
 				model.meta = text.meta
-				model.meta.url = self.app.config.globals.baseUrl + "/" + data._id
+				model.meta.url = self.app.config.globals.baseUrl + "/" + data.language + "/" + data._id
+				model.meta._id = data._id
 				model.content = text.content
 
 				callback model
@@ -57,7 +58,8 @@ module.exports = class CatalogueController
 
 			response = {
 				meta: model.meta,
-				url: self.app.config.globals.baseUrl + "/" + model.url,
+				url: model.meta.url,
+				path: model.url,
 				content: self.app.renderer.render(handler.htmlTemplate, model),
 				language: model.language,
 			}

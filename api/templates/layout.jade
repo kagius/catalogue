@@ -41,6 +41,21 @@ html(lang=data.language)
 								a(href="/#{data.language}/about")= data.i18n.about
 							li
 								a(href="/#{data.language}/contact")= data.i18n.contact
+							li
+								div.dropdown.languages
+									button#languageMenu.btn.dropdown-toggle(type="button", data-toggle="dropdown")
+										| Dropdown
+										span.caret
+									
+									ul.dropdown-menu(role="menu", aria-labelledby="languageMenu")
+										li(role="presentation")
+											a(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/en/#{data.path}", data-base="#{ globals.baseUrl }/en/") English
+										li(role="presentation")
+											a(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/de/#{data.path}", data-base="#{ globals.baseUrl }/de/") Deutsch
+										li(role="presentation")
+											a(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/fr/#{data.path}", data-base="#{ globals.baseUrl }/fr/") Français
+										li(role="presentation")
+											a(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/it/#{data.path}", data-base="#{ globals.baseUrl }/it/") Italiano
 				if data.meta.nolinks
 					div.navbar-header
 						span.navbar-brand TBD

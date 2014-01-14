@@ -27,6 +27,23 @@ module.exports = {
 		//accessControlAllowOrigins: "http://127.0.0.1:8000"
 	},
 
+	mail: {
+		transport: {
+			type: "SMTP",
+			options: {
+				host: "smtp.gmail.com",
+				secureConnection: true,
+				port: 465,
+				auth: {
+					user: "gmail.user@gmail.com",
+					pass: "userpass"
+				}
+			}
+		},
+		sender: "gmail.user@gmail.com",
+		recipient: "gmail.user@gmail.com"
+	},
+
  	templates: {
  		path: __dirname + '/../templates/'
  	},

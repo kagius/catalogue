@@ -21,8 +21,10 @@ module.exports = class PageController
 
 			self.app.model.Text.find (err, text) ->
 				model.meta = text.meta
-				model.meta.url = self.app.config.globals.baseUrl + "/" + data._id
 				model.content = text.content
+				model.meta.url = self.app.config.globals.baseUrl + "/" + data.language + "/" + data.slug
+				model.meta._id = data._id
+				model.url = data.slug
 
 				callback model
 
@@ -33,8 +35,10 @@ module.exports = class PageController
 
 			response = {
 				meta: model.meta
-				url: self.app.config.globals.baseUrl + "/" + model.url
-				content: self.app.renderer.render(handler.htmlTemplate, model)
+				url: model.meta.url,
+				path: model.url,
+				content: self.app.renderer.render(handler.htmlTemplate, model),
+				language: model.language
 			}
 
 			callback null, response
@@ -48,7 +52,7 @@ module.exports = class PageController
 				htmlTemplate: "about-page",
 				writer: self.writer,
 				implementation: (req, handler, callback) -> 
-					data = { _id: "page/about", language: req.params.language }
+					data = { _id: "page/about", language: req.params.language, slug: "about"}
 
 					self.localize data, (model) ->
 						self.finalize model, handler, callback
@@ -62,7 +66,7 @@ module.exports = class PageController
 				htmlTemplate: "contact-page",
 				writer: self.writer,
 				implementation: (req, handler, callback) -> 
-					data = { _id: "page/contact", language: req.params.language }
+					data = { _id: "page/contact", language: req.params.language, slug: "contact" }
 
 					self.localize data, (model) ->
 						self.finalize model, handler, callback
@@ -76,10 +80,14 @@ module.exports = class PageController
 				htmlTemplate: "contact-page",
 				writer: self.writer,
 				implementation: (req, handler, callback) -> 
-					data = { _id: "page/contact", language: req.params.language }
+					self.app.mailer.send req.params.address, req.params.subject, req.params.message, (mailResponse) ->
+						data = { _id: "page/contact", language: req.params.language, slug: "contact" }
 
-					self.localize data, (model) ->
-						self.finalize model, handler, callback
+						self.localize data, (model) ->
+							model.sendSuccess = mailResponse.success
+							model.sendFail = !mailResponse.success
+							
+							self.finalize model, handler, callback
 			},
 		]
 

@@ -5,6 +5,9 @@ module.exports = class Server
 	constructor : (@app) ->
 		@server = restify.createServer()
 
+		# Enable post parameter parsing and mapping
+		@server.use(restify.bodyParser())
+
 		if (@app.config.assets.serveStatic)
 			@server.get @app.config.assets.baseUrlPattern, restify.serveStatic { directory: @app.config.assets.basePath }
 

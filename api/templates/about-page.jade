@@ -1,6 +1,5 @@
 if data.meta.fallback
-	div.alert.alert-danger
-		| This page is not available in your selected language. Showing default.
+	div.alert.alert-danger= data.i18n.noTranslation
 
 if data.meta.title
 	h1

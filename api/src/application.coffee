@@ -11,6 +11,7 @@ LanguageSelectorController = require "./LanguageSelectorController"
 Server = require "./server"
 JadeRenderer = require "./render-jade"
 Resources = require "./Resources"
+Mailer = require "./mailer"
 
 class Application
 
@@ -33,6 +34,9 @@ app.model.Text = new Text app
 
 # Register renderer.
 app.renderer = new JadeRenderer app
+
+# Register mail helper
+app.mailer = new Mailer app
 
 # Register controllers.
 app.controllers.DefaultPageApi = new PageController app, "/api/:language", app.server.jsonWriter

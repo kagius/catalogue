@@ -1,6 +1,5 @@
 if data.meta.fallback
-	div.alert.alert-danger
-		| This page is not available in your selected language. Showing default.
+	div.alert.alert-danger= data.i18n.noTranslation
 
 if data.meta.title
 	h1
@@ -9,5 +8,25 @@ if data.meta.title
 if data.content
 	div#contact!= data.content
 
-form(method="post", action="/#{data.language}/#{data.url}")
-	input(type="submit", value="Send")
+if data.sendSuccess
+	div.alert.alert-success= data.i18n.emailSent
+
+if data.sendFail
+	div.alert.alert-error= data.i18n.emailFailed
+
+unless data.sendSuccess
+	form(method="post", action="/#{data.language}/contact", role="form", id="contactEmail")
+
+		div(class="form-group")
+			label(for="subject")= data.i18n.emailSubject
+			input(type="text", name="subject", id="subject", class="form-control")
+
+		div(class="form-group")
+			label(for="address")= data.i18n.emailAddress
+			input(type="email", name="address", id="address", class="form-control")
+
+		div(class="form-group")
+			label(for="subject")= data.i18n.emailMessage
+			textarea(name="message", id="message", class="form-control")
+
+		input(type="submit",  class="btn btn-default", value=data.i18n.emailSend)

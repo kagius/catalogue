@@ -21,7 +21,7 @@ module.exports = class CatalogueController
 				language: data.language,
 				url: data._id
 			}
-			console.log model
+			
 			self.app.model.Text.find (err, text) ->
 				model.meta = text.meta
 				model.meta.url = self.app.config.globals.baseUrl + "/" + data.language + "/" + data._id

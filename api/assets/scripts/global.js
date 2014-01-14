@@ -28,7 +28,7 @@ require(['jquery', 'jquery.history', 'ga', 'collapse', 'dropdown'], function ($)
 
         $("link[rel='canonical']").attr("href", data.url);
         $("meta[property='og:url']").attr("content", data.url);
-        $(".languages a").each(function() {
+        $("a.language").each(function() {
            var link = $(this);
            link.attr("href", link.data("base") + data.path);
         });

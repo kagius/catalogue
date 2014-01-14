@@ -44,13 +44,13 @@ html(lang=data.language)
 							
 						ul.nav.navbar-nav.navbar-right
 							li(role="presentation")
-								a(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/en/#{data.path}", data-base="#{ globals.baseUrl }/en/") English
+								a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/en/#{data.path}", data-base="#{ globals.baseUrl }/en/") English
 							li(role="presentation")
-								a(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/de/#{data.path}", data-base="#{ globals.baseUrl }/de/") Deutsch
+								a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/de/#{data.path}", data-base="#{ globals.baseUrl }/de/") Deutsch
 							li(role="presentation")
-								a(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/fr/#{data.path}", data-base="#{ globals.baseUrl }/fr/") Français
+								a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/fr/#{data.path}", data-base="#{ globals.baseUrl }/fr/") Français
 							li(role="presentation")
-								a(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/it/#{data.path}", data-base="#{ globals.baseUrl }/it/") Italiano
+								a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/it/#{data.path}", data-base="#{ globals.baseUrl }/it/") Italiano
 							
 				if data.meta.nolinks
 					div.navbar-header

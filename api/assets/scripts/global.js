@@ -89,9 +89,6 @@ require(['jquery', 'jquery.history', 'ga', 'collapse', 'dropdown'], function ($)
     // Override the default submit handler for the mailer.
     // If javascript is not available for some reason, it will behave like a normal submit button.
     $(document.body).on('click', '#contactEmail input[type=submit]' , function(){      
-
-       
-
         var jsonUrl = $("#contactEmail").attr("action")
 
         $.post("/api" + jsonUrl, {
@@ -109,5 +106,11 @@ require(['jquery', 'jquery.history', 'ga', 'collapse', 'dropdown'], function ($)
         // Return false to prevent the normal behaviour from firing.
         // (We don't want the browser to reload the page)
         return false;
+    });
+
+    // Close the menu dropdown when contact or about are clicked (since they will not result in a page load, 
+    // the mobile menu would otherwise stay open).
+    $(document.body).on('click', '.menuitem', function(){
+        $(".navbar-header .navbar-toggle").click();
     });
 });

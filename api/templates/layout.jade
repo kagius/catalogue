@@ -38,9 +38,9 @@ html(lang=data.language)
 					div.navbar-collapse.collapse
 						ul.nav.navbar-nav.navbar-left
 							li					
-								a(href="/#{data.language}/about", data-toggle="dropdown")= data.i18n.about
+								a.menuitem(href="/#{data.language}/about")= data.i18n.about
 							li
-								a(href="/#{data.language}/contact", data-toggle="dropdown")= data.i18n.contact
+								a.menuitem(href="/#{data.language}/contact")= data.i18n.contact
 							
 						ul.nav.navbar-nav.navbar-right
 							li(role="presentation")

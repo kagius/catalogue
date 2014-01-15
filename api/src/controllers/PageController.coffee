@@ -19,7 +19,7 @@ module.exports = class PageController
 				url: data._id
 			}
 
-			self.app.model.Text.find (err, text) ->
+			self.app.model.Text.find data._id, model.language, (text) ->
 				model.meta = text.meta
 				model.content = text.content
 				model.meta.url = self.app.config.globals.baseUrl + "/" + data.language + "/" + data.slug
@@ -27,8 +27,6 @@ module.exports = class PageController
 				model.url = data.slug
 
 				callback model
-
-			, data._id, model.language
 
 		@finalize = (model, handler, callback) ->
 			model.i18n = self.app.resources.get(model.language)

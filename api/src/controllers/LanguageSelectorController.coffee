@@ -19,14 +19,12 @@ module.exports = class LanguageSelectorController
 				url: data._id
 			}
 
-			self.app.model.Text.find (err, text) ->
+			self.app.model.Text.find data._id, model.language, (text) ->
 				model.meta = text.meta
 				model.meta.url = self.app.config.globals.baseUrl + "/" + data._id
 				model.content = text.content
 
 				callback model
-
-			, data._id, model.language
 
 		@finalize = (model, handler, callback) ->
 			response = {

@@ -22,7 +22,7 @@ module.exports = class CatalogueController
 				url: data._id
 			}
 			
-			self.app.model.Text.find (err, text) ->
+			self.app.model.Text.find data._id, model.language, (text) ->
 				model.meta = text.meta
 				model.meta.url = self.app.config.globals.baseUrl + "/" + data.language + "/" + data._id
 				model.meta._id = data._id
@@ -30,15 +30,13 @@ module.exports = class CatalogueController
 
 				callback model
 
-			, data._id, model.language
-
 		@localizeChildCollection = (model, childCollectionName, callback) ->
 
 			childLanguage = model.language
 			if model.meta.fallback
 				childLanguage = model.meta.fallback
 
-			self.app.model.Text.getTitles (err, list) ->
+			self.app.model.Text.getTitles (list) ->
 				model.children = list
 				callback model
 			, model.data[childCollectionName], childLanguage
@@ -48,10 +46,9 @@ module.exports = class CatalogueController
 			if model.meta.fallback
 				childLanguage = model.meta.fallback
 
-			self.app.model.Text.find (err, text) ->
+			self.app.model.Text.find parameterValue, childLanguage, (text) ->
 				model[parameterName] = { label: text.meta.title, url: text.url }
 				callback model
-			, parameterValue, childLanguage
 
 		@finalize = (model, handler, callback) ->
 			model.i18n = self.app.resources.get(model.language)
@@ -193,7 +190,7 @@ module.exports = class CatalogueController
 							countries = []
 							countries.push(item.id) for item in model.data
 
-							self.app.model.Text.getTitles (err, list) ->
+							self.app.model.Text.getTitles (list) ->
 								model.children = list								
 								self.finalize model, handler, callback
 							, countries, childLanguage

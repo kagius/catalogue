@@ -20,7 +20,7 @@ html(lang=data.language)
 
 		if (data.meta.alternatives)
 			for alt in data.meta.alternatives
-				link(rel="alternate", hreflang="alt.lang" href="alt.url")
+				link(rel="alternate", hreflang="#{alt}" href="#{ globals.baseUrl }/#{alt}/#{data.path}")
 	body
 		div.navbar.navbar-inverse(role="navigation")
 

@@ -37,6 +37,24 @@ MongoClient.connect("mongodb://localhost/testcat", function(err, db) {
 		},
 
 		{
+			url : "",
+
+			language: {
+				country: "IT",
+				locale: "it-IT",
+				language : "it"
+			},
+
+			meta: {
+				title: "Inizio",
+				description: "Scegli un paese",
+				keywords: "Bla bla bla",	
+			},
+
+			content: "Scegli un paese"
+		},
+
+		{
 			url : "mt",
 
 			language: {

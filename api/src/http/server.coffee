@@ -32,7 +32,7 @@ module.exports = class Server
 			body = self.app.renderer.render "layout", data
 
 			# To do - Handle 404 and 500 messages				
-			res.writeHead 200, { 'Content-Type': 'text/html', 'Content-Length' : body.length }
+			res.writeHead 200, { 'Content-Type': 'text/html', 'Content-Length' : body.length+1 }
 			res.write body
 			res.end()
 			next()

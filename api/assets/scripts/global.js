@@ -28,10 +28,19 @@ require(['jquery', 'jquery.history', 'ga', 'collapse', 'dropdown'], function ($)
 
         $("link[rel='canonical']").attr("href", data.url);
         $("meta[property='og:url']").attr("content", data.url);
+
+        // remove alt urls
+        $("link[rel=alternate]").remove();
+
+        // Update language menu and alt urls.
         $("a.language").each(function() {
            var link = $(this);
-           link.attr("href", link.data("base") + data.path);
-        });
+           var lang = link.data("lang");
+           var localizedUrl = link.data("base") + data.path;
+
+           link.attr("href", localizedUrl);
+           $("head").append("<link rel=\"alternate\" hreflang=\"" + lang + "\" href=\"" + localizedUrl + "\" />");
+        });        
 
         // Update page content
         content.html(data.content);

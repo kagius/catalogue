@@ -100,12 +100,46 @@ require(['jquery', 'jquery.history', 'ga', 'collapse', 'dropdown'], function ($)
     $(document.body).on('click', '#contactEmail input[type=submit]' , function(){      
         var jsonUrl = $("#contactEmail").attr("action")
 
+        var address = $("#address").val();
+        var message = $("#message").val();
+
+        var addressMissing = (!address || address.length < 1);
+        var addressFormatWrong = (!addressMissing && (!/\S+@\S+\.\S+/.test(address)))
+        var hasEmailIssue = addressMissing || addressFormatWrong;
+
+        var messageMissing = (!message || message.length < 1);
+        var messageTooShort = (!messageMissing && message.length < 50);
+        var messageTooLong = (!messageMissing && message.length > 1000);
+        var hasMessageIssue = messageMissing || messageTooShort || messageTooLong;
+
+        if (hasEmailIssue) {
+            $("#emailError").show();
+            if (addressMissing) $("#emailMissing").show(); else $("#emailMissing").hide();
+            if (addressFormatWrong) $("#emailFormatWrong").show(); else $("#emailFormatWrong").hide();
+        } else {
+            $("#emailError").hide();
+        }
+
+        if (hasMessageIssue) {
+            $("#messageError").show();
+            if (messageMissing) $("#messageMissing").show(); else $("#messageMissing").hide();
+            if (messageTooShort) $("#messageTooShort").show(); else $("#messageTooShort").hide();
+            if (messageTooLong) $("#messageTooLong").show(); else $("#messageTooLong").hide();
+        } else {
+            $("#messageError").hide();
+        }
+
+        if (hasEmailIssue || hasMessageIssue)
+            return false;
+
         $.post("/api" + jsonUrl, {
-            "address": $("#address").val(),
-            "message": $("#message").val()
+            "address": address,
+            "message": message
         }).done(function(data) {       
 
-            // To do: Register analytics event
+            // Register analytics event
+            window.ga('send', 'event', 'email', 'sent');
+
             updateContent(null, data);
         })
 

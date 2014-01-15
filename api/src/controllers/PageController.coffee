@@ -86,13 +86,16 @@ module.exports = class PageController
 					validation = {}
 
 					validation.addressMissing = (!address || address.length < 1)
-					validation.addressFormatWrong = (!addressMissing && (!/\S+@\S+\.\S+/.test(address)))
-					validation.hasEmailIssue = addressMissing || addressFormatWrong
+					validation.addressFormatWrong = (!validation.addressMissing && (!/\S+@\S+\.\S+/.test(address)))
+					validation.hasEmailIssue = validation.addressMissing || validation.addressFormatWrong
 
 					validation.messageMissing = (!message || message.length < 1)
-					validation.messageTooShort = (!messageMissing && message.length < 50)
-					validation.messageTooLong = (!messageMissing && message.length > 1000)
-					validation.hasMessageIssue = messageMissing || messageTooShort || messageTooLong
+					validation.messageTooShort = (!validation.messageMissing && message.length < 50)
+					validation.messageTooLong = (!validation.messageMissing && message.length > 1000)
+					validation.hasMessageIssue = validation.messageMissing || validation.messageTooShort || validation.messageTooLong
+
+					console.log "validation status"
+					console.log validation.hasEmailIssue || validation.hasMessageIssue
 
 					if validation.hasEmailIssue || validation.hasMessageIssue
 						data = { _id: "page/contact", language: req.params.language, slug: "contact" }
@@ -105,6 +108,7 @@ module.exports = class PageController
 							data = { _id: "page/contact", language: req.params.language, slug: "contact" }
 
 							self.localize data, (model) ->
+								model.validation = {}
 								model.sendSuccess = mailResponse.success
 								model.sendFail = !mailResponse.success
 								

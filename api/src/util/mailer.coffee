@@ -7,10 +7,6 @@ module.exports = class Mailer
 		@send = (from, message, callback) ->
 			transport = nodemailer.createTransport self.app.config.mail.transport.type, self.app.config.mail.transport.options
 
-			console.log "mailer"
-			console.log from
-			console.log message
-
 			mailOptions = {
 				to: self.app.config.mail.recipient,
 				subject: "Message from TBD sent by: #{from}",

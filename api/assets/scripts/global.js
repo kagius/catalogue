@@ -101,7 +101,6 @@ require(['jquery', 'jquery.history', 'ga', 'collapse', 'dropdown'], function ($)
         var jsonUrl = $("#contactEmail").attr("action")
 
         $.post("/api" + jsonUrl, {
-            "subject": $("#subject").val(),
             "address": $("#address").val(),
             "message": $("#message").val()
         }).done(function(data) {       

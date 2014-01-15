@@ -18,15 +18,25 @@ unless data.sendSuccess
 	form(method="post", action="/#{data.language}/contact", role="form", id="contactEmail")
 
 		div(class="form-group")
-			label(for="subject")= data.i18n.emailSubject
-			input(type="text", name="subject", id="subject", class="form-control")
-
-		div(class="form-group")
 			label(for="address")= data.i18n.emailAddress
 			input(type="email", name="address", id="address", class="form-control")
 
+		div.alert.alert-danger#emailError(class=data.validation.hasEmailIssue ? "" : "no-show")
+			span#emailMissing(class=data.validation.addressMissing ? "" : "no-show")
+				| We need your email address to reply to your message. Don't worry, we won't give it to anyone else!
+			span#emailFormatWrong(class=data.validation.addressFormatWrong ? "" : "no-show")
+				| This email address looks a bit off. Are you sure it's correct?		
+
 		div(class="form-group")
-			label(for="subject")= data.i18n.emailMessage
+			label(for="message")= data.i18n.emailMessage
 			textarea(name="message", id="message", class="form-control")
+
+		div.alert.alert-danger#messageError(class=data.validation.hasMessageIssue ? "" : "no-show")
+			span#messageMissing(class=data.validation.messageMissing ? "" : "no-show")
+				| Please enter your message in the box below.
+			span#messageTooShort(class=data.validation.messageTooShort ? "" : "no-show")
+				| Please enter a longer message - we can't take messages under 50 characters.
+			span#messageTooLong(class=data.validation.messageTooLong ? "" : "no-show")
+				| Sorry, we can't accept messages over 1000 characters long. 
 
 		input(type="submit",  class="btn btn-default", value=data.i18n.emailSend)

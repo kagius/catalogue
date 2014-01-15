@@ -67,6 +67,7 @@ module.exports = class PageController
 					data = { _id: "page/contact", language: req.params.language, slug: "contact" }
 
 					self.localize data, (model) ->
+						model.validation = {}
 						self.finalize model, handler, callback
 			},
 
@@ -78,14 +79,36 @@ module.exports = class PageController
 				htmlTemplate: "contact-page",
 				writer: self.writer,
 				implementation: (req, handler, callback) -> 
-					self.app.mailer.send req.params.address, req.params.subject, req.params.message, (mailResponse) ->
-						data = { _id: "page/contact", language: req.params.language, slug: "contact" }
 
+					address = req.params.address
+					message = req.params.message
+
+					validation = {}
+
+					validation.addressMissing = (!address || address.length < 1)
+					validation.addressFormatWrong = (!addressMissing && (!/\S+@\S+\.\S+/.test(address)))
+					validation.hasEmailIssue = addressMissing || addressFormatWrong
+
+					validation.messageMissing = (!message || message.length < 1)
+					validation.messageTooShort = (!messageMissing && message.length < 50)
+					validation.messageTooLong = (!messageMissing && message.length > 1000)
+					validation.hasMessageIssue = messageMissing || messageTooShort || messageTooLong
+
+					if validation.hasEmailIssue || validation.hasMessageIssue
+						data = { _id: "page/contact", language: req.params.language, slug: "contact" }
 						self.localize data, (model) ->
-							model.sendSuccess = mailResponse.success
-							model.sendFail = !mailResponse.success
-							
+							model.validation = validation		
 							self.finalize model, handler, callback
+
+					else
+						self.app.mailer.send req.params.address, req.params.message, (mailResponse) ->
+							data = { _id: "page/contact", language: req.params.language, slug: "contact" }
+
+							self.localize data, (model) ->
+								model.sendSuccess = mailResponse.success
+								model.sendFail = !mailResponse.success
+								
+								self.finalize model, handler, callback
 			},
 		]
 

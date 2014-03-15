@@ -14,7 +14,8 @@ html(lang=data.language)
 		meta(property="og:url", content="#{data.meta.url}/")
 		meta(property="og:image", content="")
 
-		link(rel="stylesheet", href="#{ globals.baseUrl }/assets/styles/bootstrap.min.css")
+		link(rel="stylesheet", href="#{ globals.baseUrl }/assets/styles/main.css")
+		link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=PT+Sans+Narrow")
 		link(rel="shortcut icon", type="image/x-icon", href="#{ globals.baseUrl }/assets/favicon.ico")
 		link(rel="canonical", href="#{data.meta.url}")
 
@@ -22,46 +23,49 @@ html(lang=data.language)
 			for alt in data.meta.alternatives
 				link(rel="alternate", hreflang="#{alt}" href="#{ globals.baseUrl }/#{alt}/#{data.path}")
 	body
-		div.navbar.navbar-inverse(role="navigation")
+		div#wrap
+			div.navbar.navbar-inverse(role="navigation")
 
-			div.container
-				unless data.meta.nolinks
-					div.navbar-header
-						button.navbar-toggle(type="button",data-toggle="collapse",data-target=".navbar-collapse")
-							span.sr-only Toggle navigation
-							span.icon-bar
-							span.icon-bar
-							span.icon-bar							
+				div.container
+					unless data.meta.nolinks
+						div.navbar-header
+							button.navbar-toggle(type="button",data-toggle="collapse",data-target=".navbar-collapse")
+								span.sr-only Toggle navigation
+								span.icon-bar
+								span.icon-bar
+								span.icon-bar							
 
-						a.navbar-brand(href="/#{data.language}") TBD
+							a.navbar-brand(href="/#{data.language}") TBD
 
-					div.navbar-collapse.collapse
-						ul.nav.navbar-nav.navbar-left
-							li					
-								a.menuitem(href="/#{data.language}/about")= data.i18n.about
-							li
-								a.menuitem(href="/#{data.language}/contact")= data.i18n.contact
-							
-						ul.nav.navbar-nav.navbar-right
-							li(role="presentation")
-								a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/en/#{data.path}", data-lang="en", data-base="#{ globals.baseUrl }/en/") English
-							li(role="presentation")
-								a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/de/#{data.path}", data-lang="de", data-base="#{ globals.baseUrl }/de/") Deutsch
-							li(role="presentation")
-								a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/fr/#{data.path}", data-lang="fr", data-base="#{ globals.baseUrl }/fr/") Français
-							li(role="presentation")
-								a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/it/#{data.path}", data-lang="it", data-base="#{ globals.baseUrl }/it/") Italiano
-							
-				if data.meta.nolinks
-					div.navbar-header
-						span.navbar-brand TBD
+						div.navbar-collapse.collapse
+							ul.nav.navbar-nav.navbar-left
+								li					
+									a.menuitem(href="/#{data.language}/about")= data.i18n.about
+								li
+									a.menuitem(href="/#{data.language}/contact")= data.i18n.contact
+								
+							ul.nav.navbar-nav.navbar-right
+								li(role="presentation")
+									a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/en/#{data.path}", data-lang="en", data-base="#{ globals.baseUrl }/en/") English
+								li(role="presentation")
+									a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/de/#{data.path}", data-lang="de", data-base="#{ globals.baseUrl }/de/") Deutsch
+								li(role="presentation")
+									a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/fr/#{data.path}", data-lang="fr", data-base="#{ globals.baseUrl }/fr/") Français
+								li(role="presentation")
+									a.language(role="menuitem", tabindex="-1", href="#{ globals.baseUrl }/it/#{data.path}", data-lang="it", data-base="#{ globals.baseUrl }/it/") Italiano
+								
+					if data.meta.nolinks
+						div.navbar-header
+							span.navbar-brand TBD
 
-		div.container
-			section#content!= data.content				
+			div#main.container
+				section#content!= data.content				
 
-			div#loader(style="display:none")= data.i18n.loading
+				div#loader(style="display:none")= data.i18n.loading
 
-			footer
-				| Page footer
+			div#push
+
+		footer
+			| Page footer
 
 		script(src="#{ globals.baseUrl }/assets/scripts/require.js", data-main="/assets/scripts/global")

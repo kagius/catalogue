@@ -18,20 +18,20 @@ block breadcrumbs
 if data.meta.fallback
 	div.alert.alert-danger= data.i18n.noTranslation
 
-block title
-	if data.meta.title
-		h1
-			a(href="/#{data.language}/#{data.url}")= data.meta.title
-			
 if data.content
-	div!= data.content
+	header
+		img.img-responsive(src="#{ globals.baseUrl }/assets/images/#{ data.url }/cover.jpg")
+		block title
+			if data.meta.title
+				h1
+					a(href="/#{data.language}/#{data.url}")= data.meta.title
 
 if data.children.length > 0
-	block subtitle
-	
 	div.list-group
 		for child in data.children
 			a.list-group-item(href="/#{data.language}/#{child.url}")= child.meta.title
+
+	div!= data.content
 
 unless data.children.length > 0
 	div.alert.alert-warning= data.i18n.noInformation

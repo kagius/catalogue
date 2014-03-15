@@ -13,5 +13,6 @@ module.exports = {
 	"emailValidationAddressFormat": "This email address looks a bit off. Are you sure it's correct?",
 	"emailValidationMessageMissing": "Please enter your message in the box above.",
 	"emailValidationMessageTooShort": "Please enter a longer message - we can't take messages under 50 characters.",
-	"emailValidationMessageTooLong": "Sorry, we can't accept messages over 1000 characters long."
+	"emailValidationMessageTooLong": "Sorry, we can't accept messages over 1000 characters long.",
+	"moreInfo": "Troverete piu informazioni presso"
 }

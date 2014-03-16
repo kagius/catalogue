@@ -16,7 +16,13 @@
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-nodeunit": "~0.2.2",
-    "grunt-contrib-coffee": "~0.8.0"
+    "grunt-contrib-coffee": "~0.8.0",
+    "grunt-cucumber": "~0.2.3",
+    "selenium-webdriver": "~2.40.0",
+    "selenium-launcher": "~1.1.10",
+    "soda": "~0.2.5",
+    "grunt-nodemon": "~0.2.1",
+    "grunt-concurrent": "~0.5.0"
   },
   "dependencies": {
     "restify": "~2.6.1",

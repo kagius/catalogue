@@ -6,6 +6,29 @@ module.exports = function(grunt) {
 		
 		// Package information
 		pkg: grunt.file.readJSON('package.json'),
+
+		concurrent: {
+		  dev: {
+		    tasks: ['nodemon'],
+		    options: {
+		      logConcurrentOutput: true
+		    }
+		  }
+		},
+
+		// Cucumber tests
+		cucumberjs: {
+			src: 'test/behaviour/features',
+			options: {
+				steps: 'test/behaviour/steps'
+			}
+		},
+
+		nodemon: {
+			dev: {
+				script: 'dist/application.js'
+			}
+		},
 		
 		// Coffescript compiler
 		coffee: {
@@ -32,7 +55,15 @@ module.exports = function(grunt) {
 	// These plugins provide necessary tasks.
 	grunt.loadNpmTasks('grunt-contrib-coffee');
 	grunt.loadNpmTasks('grunt-contrib-nodeunit');
+	grunt.loadNpmTasks('grunt-cucumber');
+	grunt.loadNpmTasks('grunt-nodemon');
+	grunt.loadNpmTasks('grunt-concurrent');
 	
 	// Default task.
-	grunt.registerTask('default', ['coffee', 'nodeunit']);
+	grunt.registerTask('default', ['coffee', 'nodeunit', 'concurrent']);
+
+	// Run
+	grunt.registerTask('serve', ['nodemon']);
+
+	grunt.registerTask('system-test', ['cucumberjs']);
 }

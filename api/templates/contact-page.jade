@@ -34,4 +34,4 @@ unless data.sendSuccess
 			span#messageTooShort(class=data.validation.messageTooShort ? "" : "no-show")= data.i18n.emailValidationMessageTooShort
 			span#messageTooLong(class=data.validation.messageTooLong ? "" : "no-show")= data.i18n.emailValidationMessageTooLong
 
-		input(type="submit",  class="btn btn-default", value=data.i18n.emailSend)
+		input#send(type="submit",  class="btn btn-default", value=data.i18n.emailSend)
